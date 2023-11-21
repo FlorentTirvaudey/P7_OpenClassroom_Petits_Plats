@@ -24,43 +24,56 @@
         </div>
     </section>
     <section class="bg-neutral-200 pt-[40px] pl-[100px] pr-[100px]">
-        <div class="flex flex-row mb-[100px] justify-between items-center text-zinc-900 font-['Manrope'] font-bold">
-            <div class="flex flex-row gap-[100px] w-[70%]">
-                <div class="flex bg-white flex-col p-[25px] w-[22%] rounded-[15px] text-[1.3em]">
-                    <div class="flex justify-between mb-[20px]">
-                        <span>Ingrédients</span>
-                        <button><i class="fa-solid fa-chevron-down"></i></button>       
+        <div class="flex flex-row relative mb-[400px] justify-between items-center text-zinc-900 font-['Manrope'] font-bold">
+            <div class="flex flex-row absolute top-0 left-0 gap-[100px] w-[70%]">
+
+                <div role="listbox" class="bg-white rounded-[15px] w-[20%]">
+                    <div role="option" class="flex flex-col pt-[25px] pl-[25px] pr-[25px] text-[1.3em]">
+                        <div class="flex justify-between mb-[20px]">
+                            <span>Ingrédients</span>
+                            <button><i class="fa-solid fa-chevron-down"></i></button>       
+                        </div>
                     </div>
-                    <div class="flex justify-center items-center border-2 border-gray-300 w-[100%] h-[60px]">
-                        <input class="w-[80%] h-[100%] p-[10px] border-none outline-none" type="search">
-                        <button class="w-[10%] ml-[5px]"><i class="fa-solid fa-xmark text-[25px] text-gray-400 hidden"></i></i></button>
-                        <button class="w-[10%] m-[10px]"><i class="fa-solid fa-magnifying-glass text-[25px] text-gray-400 font-bold"></i></i></button>
-                    </div>
-                </div>
-                <div class="flex bg-white flex-col w-[22%] p-[25px] rounded-[15px] text-[1.3em]">
-                    <div class="flex justify-between mb-[20px]">
-                        <span>Appareils</span>
-                        <button><i class="fa-solid fa-chevron-down"></i></button>
-                    </div>
-                    <div class="flex justify-center items-center border-2 border-gray-300 w-[100%] h-[60px]">
-                        <input class="w-[80%] h-[100%] p-[10px] border-none outline-none" type="search">
-                        <button class="w-[10%] ml-[5px]"><i class="fa-solid fa-xmark text-[25px] text-gray-400 hidden"></i></i></button>
-                        <button class="w-[10%] m-[10px]"><i class="fa-solid fa-magnifying-glass text-[25px] text-gray-400 font-bold"></i></i></button>
+                    <div class="flex justify-center items-center pb-[20px] pl-[20px] pr-[20px] hidden">
+                        <div class="flex flex-row border-2 border-gray-300">
+                            <input class="w-[80%] p-[10px] border-none outline-none" type="search">
+                            <button class="w-[10%] ml-[5px]"><i class="fa-solid fa-xmark text-[25px] text-gray-400 hidden"></i></i></button>
+                            <button class="w-[10%] m-[10px]"><i class="fa-solid fa-magnifying-glass text-[25px] text-gray-400 font-bold"></i></i></button>
+                        </div>
                     </div>
                 </div>
-                <div class="flex bg-white flex-col w-[22%] p-[25px] rounded-[15px] text-[1.3em]">
-                    <div class="flex justify-between mb-[20px]">
-                        <span>Ustensiles</span>
-                        <button><i class="fa-solid fa-chevron-down"></i></button>
+                <div class="bg-white rounded-[15px] w-[20%]">
+                    <div class="flex flex-col pt-[25px] pl-[25px] pr-[25px] text-[1.3em]">
+                        <div class="flex justify-between mb-[20px]">
+                            <span>Appareils</span>
+                            <button><i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
                     </div>
-                    <div class="flex justify-center items-center border-2 border-gray-300 w-[100%] h-[60px]">
-                        <input class="w-[80%] h-[100%] p-[10px] border-none outline-none" type="search">
-                        <button class="w-[10%] ml-[5px]"><i class="fa-solid fa-xmark text-[25px] text-gray-400 hidden"></i></i></button>
-                        <button class="w-[10%] m-[10px]"><i class="fa-solid fa-magnifying-glass text-[25px] text-gray-400 font-bold"></i></i></button>
+                    <div class="flex justify-center items-center pb-[20px] pl-[20px] pr-[20px] hidden">
+                        <div class="flex flex-row border-2 border-gray-300">
+                            <input class="w-[80%] p-[10px] border-none outline-none" type="search">
+                            <button class="w-[10%] ml-[5px]"><i class="fa-solid fa-xmark text-[25px] text-gray-400 hidden"></i></i></button>
+                            <button class="w-[10%] m-[10px]"><i class="fa-solid fa-magnifying-glass text-[25px] text-gray-400 font-bold"></i></i></button>
+                        </div>
                     </div>
+                </div>
+                <div class="bg-white rounded-[15px] w-[20%]">
+                    <div class="flex flex-col pt-[25px] pl-[25px] pr-[25px] text-[1.3em]">
+                        <div class="flex justify-between mb-[20px]">
+                            <span>Ustensiles</span>
+                            <button><i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
+                    </div>
+                        <div class="flex justify-center items-center pb-[20px] pl-[20px] pr-[20px] hidden">
+                            <div class="flex flex-row border-2 border-gray-300">
+                                <input class="w-[80%] p-[10px] border-none outline-none" type="search">
+                                <button class="w-[10%] ml-[5px]"><i class="fa-solid fa-xmark text-[25px] text-gray-400 hidden"></i></i></button>
+                                <button class="w-[10%] m-[10px]"><i class="fa-solid fa-magnifying-glass text-[25px] text-gray-400 font-bold"></i></i></button>
+                            </div>
+                        </div>
                 </div>
             </div>
-            <div class="text-[1.8em] font-bold font-['Anton']"><span></span>recettes</div>
+            <div class="absolute right-0 top-[20px] text-[1.8em] font-bold font-['Anton']"><span></span>recettes</div>
         </div>
         <div class="grid pb-[100px]">
 
@@ -73,7 +86,7 @@
                 </div>
                 <div class="ml-[20px] mr-[20px]">
                     <h2 class="font-['Anton'] font-bold text-[1.6em] mt-[25px] mb-[35px]">Limonade de coco</h2>
-                    <div class="font-['Manrope'] text-[1.0em] text-neutral-950">
+                    <div class="font-['Manrope'] text-[1.0em]">
                         <h3 class="uppercase text-zinc-500 tracking-[.10em] font-bold">Recette</h3>
                         <p class="mt-[15px] mb-[35px]">Je suis un paragraphe Je suis un paragraphe Je suis un paragraphe Je suis un paragraphe Je suis un paragraphe Je suis un paragraphe</p>
                         <h3 class="uppercase text-zinc-500 tracking-[.10em] font-bold">Ingrédients</h3>
