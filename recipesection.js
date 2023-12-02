@@ -1,16 +1,25 @@
-async function fetchData() {
-	try {
-		const response = await fetch("data/recipes.js");
-		const data = await response.value;
-		return data;
-	} catch (error) {
-		console.log("Une erreur s'est produite :", error);
-	}
-}
+  //import recipes from "./data/recipes.js";
+// import require from "./requirejs"
+//  const recipes = require("./data/recipes2.json");
 
-async function initCards() {
-	const data = fetchData();
-	console.log(data);
+// console.log(recipes)
+
+function initCards() {
+	const cardsection = document.getElementById("card_section");
+	console.log(cardsection)
+
+	recipes.forEach(data => {
+		const card = new RecipeCard(data).getReceipeCard();
+		// const buildcard = card.getReceipeCard();
+		cardsection.appendChild(card);
+		console.log(data);
+
+	})
+	// data.forEach(dataflux => {
+
+	// })
+
+	// console.log(recipes)
 }
 
 

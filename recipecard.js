@@ -89,7 +89,6 @@ class RecipeCard {
         article.appendChild(imgContainer);
         article.appendChild(recipeContainer);
 
-        return { article };
-
+        return article;
     }
 }

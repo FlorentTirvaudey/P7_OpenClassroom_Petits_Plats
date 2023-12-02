@@ -6,8 +6,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
     <title>Les Petits Plats</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <section class="relative h-[900px] bg-[url('/assets/pictures/banner_picture.png')] bg-cover bg-center">
@@ -27,8 +27,8 @@
         <div class="flex flex-row relative mb-[400px] justify-between items-center text-zinc-900 font-['Manrope'] font-bold">
             <div class="flex flex-row absolute top-0 left-0 gap-[100px] w-[70%]">
 
-                <div role="listbox" class="bg-white rounded-[15px] w-[20%]">
-                    <div role="option" class="flex flex-col pt-[25px] pl-[25px] pr-[25px] text-[1.3em]">
+                <div class="bg-white rounded-[15px] w-[20%]">
+                    <div class="flex flex-col pt-[25px] pl-[25px] pr-[25px] text-[1.3em]">
                         <div class="flex justify-between mb-[20px]">
                             <span>Ingrédients</span>
                             <button><i class="fa-solid fa-chevron-down"></i></button>       
@@ -75,9 +75,9 @@
             </div>
             <div class="absolute right-0 top-[20px] text-[1.8em] font-bold font-['Anton']"><span></span>recettes</div>
         </div>
-        <div class="grid pb-[100px]">
+        <div id="card_section" class="grid grid-cols-3 gap-4 pb-[100px]">
 
-            <article class="h-[850px] w-[500px] bg-white rounded-[20px]">
+            <!-- <article class="h-[850px] w-[500px] bg-white rounded-[20px]">
                 <div class="relative h-[35%] w-[100%] overflow-hidden">
                     <img class="rounded-t-[10px] h-[100%] w-[100%] object-cover" src="/assets/pictures/Photos+P7+JS+Les+petits+plats/Photos P7 JS Les petits plats/Recette01.jpg" alt="">
                     <div class="absolute flex top-[20px] right-[30px] rounded-[10px] bg-[#FFD15B] p-[10px]"><span>10</span>min</div>                  
@@ -104,11 +104,13 @@
                         </div>
                     </div>
                 </div>
-            </article>
+            </article> -->
 
         </div>
     </section>
 
+    <script src="data/recipes.js"></script>
+    <script src="recipecard.js"></script>
     <script src="recipesection.js"></script>
 </body>
 </html>
