@@ -24,17 +24,17 @@
         </div>
     </section>
     <section class="bg-neutral-200 pt-[40px] pl-[100px] pr-[100px]">
-        <div class="flex flex-row relative mb-[400px] justify-between items-center text-zinc-900 font-['Manrope'] font-bold">
-            <div class="flex flex-row absolute top-0 left-0 gap-[100px] w-[70%]">
+        <div class="flex flex-row relative mb-[200px] justify-between items-center text-zinc-900 font-['Manrope'] font-bold">
+            <div class="flex flex-row absolute top-0 left-0 gap-[100px] w-[70%] items-start z-10">
 
                 <div class="bg-white rounded-[15px] w-[20%]">
                     <div class="flex flex-col pt-[25px] pl-[25px] pr-[25px] text-[1.3em]">
                         <div class="flex justify-between mb-[20px]">
                             <span>Ingrédients</span>
-                            <button><i class="fa-solid fa-chevron-down"></i></button>       
+                            <button id="ingredient_button"><i id="chevron_ingredient_button" class="fa-solid fa-chevron-down"></i></button>       
                         </div>
                     </div>
-                    <div class="flex justify-center items-center pb-[20px] pl-[20px] pr-[20px] hidden">
+                    <div id="ingredient_hidden_section" class="flex justify-center items-center pb-[20px] pl-[20px] pr-[20px] hidden">
                         <div class="flex flex-row border-2 border-gray-300">
                             <input class="w-[80%] p-[10px] border-none outline-none" type="search">
                             <button class="w-[10%] ml-[5px]"><i class="fa-solid fa-xmark text-[25px] text-gray-400 hidden"></i></i></button>
@@ -46,10 +46,10 @@
                     <div class="flex flex-col pt-[25px] pl-[25px] pr-[25px] text-[1.3em]">
                         <div class="flex justify-between mb-[20px]">
                             <span>Appareils</span>
-                            <button><i class="fa-solid fa-chevron-down"></i></button>
+                            <button id="appareils_button"><i id="chevron_appareils_button" class="fa-solid fa-chevron-down"></i></button>
                         </div>
                     </div>
-                    <div class="flex justify-center items-center pb-[20px] pl-[20px] pr-[20px] hidden">
+                    <div id="appareils_hidden_section" class="flex justify-center items-center pb-[20px] pl-[20px] pr-[20px] hidden">
                         <div class="flex flex-row border-2 border-gray-300">
                             <input class="w-[80%] p-[10px] border-none outline-none" type="search">
                             <button class="w-[10%] ml-[5px]"><i class="fa-solid fa-xmark text-[25px] text-gray-400 hidden"></i></i></button>
@@ -61,10 +61,10 @@
                     <div class="flex flex-col pt-[25px] pl-[25px] pr-[25px] text-[1.3em]">
                         <div class="flex justify-between mb-[20px]">
                             <span>Ustensiles</span>
-                            <button><i class="fa-solid fa-chevron-down"></i></button>
+                            <button id="ustensiles_button"><i id="chevron_ustensiles_button" class="fa-solid fa-chevron-down"></i></button>
                         </div>
                     </div>
-                        <div class="flex justify-center items-center pb-[20px] pl-[20px] pr-[20px] hidden">
+                        <div id="ustensiles_hidden_section" class="flex justify-center items-center pb-[20px] pl-[20px] pr-[20px] hidden">
                             <div class="flex flex-row border-2 border-gray-300">
                                 <input class="w-[80%] p-[10px] border-none outline-none" type="search">
                                 <button class="w-[10%] ml-[5px]"><i class="fa-solid fa-xmark text-[25px] text-gray-400 hidden"></i></i></button>
@@ -75,7 +75,7 @@
             </div>
             <div class="absolute right-0 top-[20px] text-[1.8em] font-bold font-['Anton']"><span></span>recettes</div>
         </div>
-        <div id="card_section" class="grid grid-cols-3 gap-4 pb-[100px]">
+        <div id="card_section" class="grid grid-cols-3 gap-20 pb-[100px]">
 
             <!-- <article class="h-[850px] w-[500px] bg-white rounded-[20px]">
                 <div class="relative h-[35%] w-[100%] overflow-hidden">
@@ -110,6 +110,7 @@
     </section>
 
     <script src="data/recipes.js"></script>
+    <script src="recipe.js"></script>
     <script src="recipecard.js"></script>
     <script src="recipesection.js"></script>
 </body>
