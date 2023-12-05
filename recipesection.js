@@ -1,3 +1,40 @@
+function getIngredients(data) {
+	let ingredientTab = [];
+
+	data.forEach(datas => {
+		datas.ingredients.forEach(ingredient => {
+			if (ingredient.ingredient && !ingredientTab.includes(ingredient.ingredient)) {
+				ingredientTab.push(ingredient.ingredient);
+			}
+		})
+	})
+	console.log("les ingrédients", ingredientTab);
+}
+
+function getAppareils(data) {
+	let appareilsTab = [];
+
+	data.forEach(datas => {
+		if (datas.appliance && !appareilsTab.includes(datas.appliance)) {
+			appareilsTab.push(datas.appliance);
+		}
+	})
+	console.log("les appareils", appareilsTab);
+}
+
+function getIngredients(data) {
+	let ingredientTab = [];
+
+	data.forEach(datas => {
+		datas.ingredients.forEach(ingredient => {
+			if (ingredient.ingredient && !ingredientTab.includes(ingredient.ingredient)) {
+				ingredientTab.push(ingredient.ingredient);
+			}
+		})
+	})
+	console.log("les ingrédients", ingredientTab);
+}
+
 function openDropdownMenuCSS(noeud, hiddenSearchbar, chevronBtn) {
 
 	noeud.addEventListener("click", () => {
@@ -29,16 +66,6 @@ function openDropdownMenu() {
 	openDropdownMenuCSS(ustensilesBtn, searchbarMenuUstensiles, chevronBtnUst);
 }
 
-// function getIngredients(data) {
-// 	let ingredientTab = [];
-
-// 	data.forEach(datas => {
-// 		ingredientTab.forEach(dataInTab => {
-// 			if(datas.)
-// 		})
-// 	})
-// }
-
 function initCards() {
 	const cardsection = document.getElementById("card_section");
 
@@ -49,6 +76,12 @@ function initCards() {
 	})
 }
 
+function displayPage() {
+	getIngredients(recipes);
+	getAppareils(recipes);
+	initCards();
+	openDropdownMenu();
+}
 
-openDropdownMenu();
-initCards();
+
+displayPage();
