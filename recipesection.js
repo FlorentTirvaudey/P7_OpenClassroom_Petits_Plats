@@ -42,35 +42,6 @@ function getUstensils(data) {
 	return ustensilsTab;
 }
 
-function displayDataInDropdownMenu(ingredients, appareils, ustensiles) {
-
-	const ingreInput = document.getElementById("ingredient_input");
-	const apparInput = document.getElementById("appareils_input");
-	const ustenInput = document.getElementById("ustensiles_input");
-
-	ingredients.forEach(ingredient => {
-		const ingre = document.createElement( "li" );
-		ingre.textContent = ingredient;
-		ingreInDropdown.appendChild(ingre);
-	})
-	// ingreInput.addEventListener("input", filteredCard);
-
-	appareils.forEach(appareil => {
-		const appar = document.createElement( "li" );
-		appar.textContent = appareil;
-		apparInDropdown.appendChild(appar);
-	})
-	// apparInput.addEventListener("input", filteredCard);
-
-	ustensiles.forEach(ustensil => {
-		const usten = document.createElement( "li" );
-		usten.textContent = ustensil;
-		ustenInDropdown.appendChild(usten);
-	})
-	// ustenInput.addEventListener("input", filteredCard);
-
-}
-
 function openDropdownMenuCSS(noeud, hiddenSearchbar, chevronBtn) {
 
 	noeud.addEventListener("click", () => {
@@ -102,20 +73,37 @@ function openDropdownMenu() {
 	openDropdownMenuCSS(ustensilesBtn, searchbarMenuUstensiles, chevronBtnUst);
 }
 
-function filteredCard(e) {
-	const ingredients = getIngredients(recipes);
+function displayDataInDropdownMenu(noeud, datas) {
 
-	ingreInDropdown.innerHTML = "";
-
-	const searchString = e.target.value.toLowerCase();
-
-	const filteredData = ingredients.filter(element => {
-		element.toLowerCase().includes(searchString);
+	datas.forEach(data => {
+		const li = document.createElement( "li" );
+		li.textContent = data;
+		noeud.appendChild(li);
 	})
+}
 
-	console.log(filteredData);
+function updateDataInDropdownMenu(noeud, datas) {
 
+	noeud.innerHTML = "";
 	
+	datas.forEach(data => {
+		const li = document.createElement( "li" );
+		li.textContent = data;
+		noeud.appendChild(li);
+	})
+}
+
+function filteredInDropdownMenu(noeud, e, datas) {
+	// const inputValue = document.getElementById(idInput).value.trim().toLowerCase();
+	const eventValue = e.target.value.trim().toLowerCase();
+	console.log(eventValue);
+
+	if (!eventValue) {
+		updateDataInDropdownMenu(noeud, datas);
+	} else {
+		const filteredDatas = datas.filter(element => element.toLowerCase().includes(eventValue));
+		updateDataInDropdownMenu(noeud, filteredDatas);
+	}
 }
 
 function initCards() {
@@ -129,15 +117,33 @@ function initCards() {
 }
 
 function displayPage() {
+	const ingreInput = document.getElementById("ingredient_input");
+	const apparInput = document.getElementById("appareils_input");
+	const ustenInput = document.getElementById("ustensiles_input");
+
 	const ingredients = getIngredients(recipes);
 	const appareils = getAppareils(recipes);
 	const ustensils = getUstensils(recipes);
 
-	displayDataInDropdownMenu(ingredients, appareils, ustensils);
+	displayDataInDropdownMenu(ingreInDropdown, ingredients);
+	displayDataInDropdownMenu(apparInDropdown, appareils);
+	displayDataInDropdownMenu(ustenInDropdown, ustensils);
+
+	ingreInput.addEventListener("input", (e) => {
+		filteredInDropdownMenu(ingreInDropdown, e, ingredients);
+	})
+	apparInput.addEventListener("input", (e) => {
+		filteredInDropdownMenu(apparInDropdown, e, appareils);
+	})
+	ustenInput.addEventListener("input", (e) => {
+		filteredInDropdownMenu(ustenInDropdown, e, ustensils);
+	})
 
 	initCards();
 	openDropdownMenu();
 }
 
-
 displayPage();
+
+
+// algo : faire une liste où tu concatènes tout les ingrédients ensemble (tu regroupes les éléments) pour pouvoir faire une recherche ciblée
