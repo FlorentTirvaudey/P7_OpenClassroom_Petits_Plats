@@ -96,11 +96,11 @@ function updateDataInDropdownMenu(noeud, datas) {
 function filteredInDropdownMenu(noeud, e, datas) {
 	// const inputValue = document.getElementById(idInput).value.trim().toLowerCase();
 	const eventValue = e.target.value.trim().toLowerCase();
-	console.log(eventValue);
+	console.log(e.target);
 
-	if (!eventValue) {
+	if (!eventValue || eventValue.length < 3) {
 		updateDataInDropdownMenu(noeud, datas);
-	} else {
+	} else if (eventValue.length >= 3){
 		const filteredDatas = datas.filter(element => element.toLowerCase().includes(eventValue));
 		updateDataInDropdownMenu(noeud, filteredDatas);
 	}
