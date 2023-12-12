@@ -120,8 +120,12 @@ function filteredCard(e) {
 
 function initCards() {
 	const cardsection = document.getElementById("card_section");
+	const nbRecipes = document.getElementById("number_of_recipes");
+	let add = 0;
 
 	recipes.forEach(data => {
+		add = add + 1;
+		nbRecipes.textContent = add;
 		const recipe = new Recipe(data);
 		const card = new RecipeCard(recipe).getReceipeCard();
 		cardsection.appendChild(card);
