@@ -2,6 +2,8 @@ const ingreInDropdown = document.getElementById("ingredient_in_dropdown");
 const apparInDropdown = document.getElementById("appareils_in_dropdown");
 const ustenInDropdown = document.getElementById("ustensils_in_dropdown");
 
+const hiddenUstensilsList = document.getElementById("hidden_ustensils_in_dropdown"); // en teste ajout dans le dropdown menu
+
 function getIngredients(data) {
 	let ingredientTab = [];
 
@@ -42,6 +44,24 @@ function getUstensils(data) {
 	return ustensilsTab;
 }
 
+// function displayDataInDropdownMenu(ingredients, appareils, ustensiles) {
+
+// 	const ustenInput = document.getElementById("ustensiles_input");
+
+// 	ustensiles.forEach(ustensil => {
+// 		const usten = document.createElement( "li" );
+// 		usten.setAttribute("class", "cursor-pointer");
+// 		usten.textContent = ustensil;
+// 		ustenInDropdown.appendChild(usten);
+
+// 		usten.addEventListener("click", e => {
+// 			const hiddenUsten = document.createElement( "li" );
+// 			hiddenUsten.textContent = e.target.innerHTML;
+// 			hiddenUstensilsList.appendChild(hiddenUsten);
+// 		})
+// 	})
+// }
+
 function openDropdownMenuCSS(noeud, hiddenSearchbar, chevronBtn) {
 
 	noeud.addEventListener("click", () => {
@@ -73,12 +93,36 @@ function openDropdownMenu() {
 	openDropdownMenuCSS(ustensilesBtn, searchbarMenuUstensiles, chevronBtnUst);
 }
 
-function displayDataInDropdownMenu(noeud, datas) {
+function displayDataInDropdownMenu(noeud, datas, selectList, hiddenSection) {
 
 	datas.forEach(data => {
 		const li = document.createElement( "li" );
+		li.setAttribute("class", "cursor-pointer");
 		li.textContent = data;
 		noeud.appendChild(li);
+
+		// let tabTest = [];
+
+		
+		// li.addEventListener("click", e => {
+		// 	tabTest.push(e.target.innerHTML);
+		// 	tabTest.forEach(items => {
+		// 		if (items !== e.target.innerHTML)
+		// 	})
+			// selectList.children.forEach(childrens => {
+			// 	if (childrens.textContent !== e.target.innerHTML) {
+
+			// 		const selectHiddenItems = document.createElement( "li" );
+			// 		selectHiddenItems.textContent = e.target.innerHTML;
+			// 		selectList.appendChild(selectHiddenItems);
+			// 		if (selectList.children) {
+			// 			console.log("je passe par là", hiddenSection);
+			// 			hiddenSection.classList.remove('hidden');
+			// 			console.log("je suis le noeud ul", selectList)
+			// 		}
+			// 	}
+			// })
+		// })
 	})
 }
 
@@ -125,13 +169,15 @@ function displayPage() {
 	const apparInput = document.getElementById("appareils_input");
 	const ustenInput = document.getElementById("ustensiles_input");
 
+	const ustenHiddenSection = document.getElementById("hidden_section_ustensils"); // en test ajout dans le dropdown menu
+
 	const ingredients = getIngredients(recipes);
 	const appareils = getAppareils(recipes);
 	const ustensils = getUstensils(recipes);
 
 	displayDataInDropdownMenu(ingreInDropdown, ingredients);
 	displayDataInDropdownMenu(apparInDropdown, appareils);
-	displayDataInDropdownMenu(ustenInDropdown, ustensils);
+	displayDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList, ustenHiddenSection);
 
 	ingreInput.addEventListener("input", (e) => {
 		filteredInDropdownMenu(ingreInDropdown, e, ingredients);
@@ -151,3 +197,8 @@ displayPage();
 
 
 // algo : faire une liste où tu concatènes tout les ingrédients ensemble (tu regroupes les éléments) pour pouvoir faire une recherche ciblée
+
+/* 
+	Questions :
+	- est-ce qu'il faut utilisé une factory pattern pour les items dans les dropdown menu ? 
+*/

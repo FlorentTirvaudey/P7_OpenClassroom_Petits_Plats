@@ -70,13 +70,17 @@
                             <button id="ustensiles_button"><i id="chevron_ustensiles_button" class="fa-solid fa-chevron-down"></i></button>
                         </div>
                     </div>
-                        <div id="ustensiles_hidden_section" class="flex flex-col justify-center pl-[20px] pr-[20px] hidden">
-                            <div class="flex flex-row border-2 border-gray-300">
+                        <div id="ustensiles_hidden_section" class="flex flex-col justify-center hidden">
+                            <div class="flex flex-row border-2 border-gray-300 ml-[20px] mr-[20px]">
                                 <input id="ustensiles_input" class="w-[80%] p-[10px] border-none outline-none" type="search">
                                 <button class="w-[10%] ml-[5px]"><i class="fa-solid fa-xmark text-[25px] text-gray-400 hidden"></i></i></button>
                                 <button class="w-[10%] m-[10px]"><i class="fa-solid fa-magnifying-glass text-[25px] text-gray-400 font-bold"></i></i></button>
                             </div>
-                            <div class="h-52 pt-8 truncate hover:overflow-y-scroll">
+                            <div id="hidden_section_ustensils" class="mt-7 bg-yellow-400 hidden">
+                                <ul id="hidden_ustensils_in_dropdown" class="flex flex-col gap-3 text-xl px-[20px] py-[10px]">
+                                </ul>
+                            </div>
+                            <div class="h-52 pt-8 truncate pl-[20px] pr-[20px] hover:overflow-y-scroll">
                                 <ul id="ustensils_in_dropdown" class="flex flex-col gap-3 text-xl"></ul>
                             </div>
                         </div>
