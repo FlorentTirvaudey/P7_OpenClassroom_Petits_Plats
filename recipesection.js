@@ -93,36 +93,72 @@ function openDropdownMenu() {
 	openDropdownMenuCSS(ustensilesBtn, searchbarMenuUstensiles, chevronBtnUst);
 }
 
+function createSearchContainer(element) {
+	const noeudParent = document.getElementById("search_container_created"); // à définir dans l'html
+
+	const searchContainer = document.createElement( "div" );
+	searchContainer.setAttribute("class", "flex flex-row justify-between items-center p-6 bg-yellow-400 rounded-[15px] w-[20%]");
+
+	const elementContent = document.createElement( "span" );
+	elementContent.setAttribute("class", "flex align-middle text-2xl");
+	elementContent.textContent = element;
+
+	const crossButton = document.createElement( "button" );
+	crossButton.setAttribute("class", "text-2xl");
+
+	const crossIcon = document.createElement( "i" );
+	crossIcon.setAttribute("class", "fa-solid fa-xmark");
+
+	crossButton.appendChild(crossIcon);
+
+	searchContainer.appendChild(elementContent);
+	searchContainer.appendChild(crossButton);
+
+	noeudParent.appendChild(searchContainer);
+}
+
+// function createContainerInDropdown() {
+// 	const selectHiddenItems = document.createElement( "li" );
+// 	selectHiddenItems.textContent = e.target.innerHTML;
+// 	selectList.appendChild(selectHiddenItems);
+// }
+
 function displayDataInDropdownMenu(noeud, datas, selectList, hiddenSection) {
 
 	datas.forEach(data => {
+
 		const li = document.createElement( "li" );
 		li.setAttribute("class", "cursor-pointer");
 		li.textContent = data;
 		noeud.appendChild(li);
-
-		// let tabTest = [];
-
 		
-		// li.addEventListener("click", e => {
-		// 	tabTest.push(e.target.innerHTML);
-		// 	tabTest.forEach(items => {
-		// 		if (items !== e.target.innerHTML)
-		// 	})
+		li.addEventListener("click", e => {
+			createSearchContainer(e.target.innerHTML);
+			console.log("je suis le noeud ul AVANT LES IF", selectList)
+
+			// tabTest.push(e.target.innerHTML);
+			// tabTest.forEach(items => {
+			// 	if (items !== e.target.innerHTML)
+			// })
 			// selectList.children.forEach(childrens => {
 			// 	if (childrens.textContent !== e.target.innerHTML) {
-
-			// 		const selectHiddenItems = document.createElement( "li" );
-			// 		selectHiddenItems.textContent = e.target.innerHTML;
-			// 		selectList.appendChild(selectHiddenItems);
-			// 		if (selectList.children) {
-			// 			console.log("je passe par là", hiddenSection);
-			// 			hiddenSection.classList.remove('hidden');
-			// 			console.log("je suis le noeud ul", selectList)
-			// 		}
-			// 	}
+				if (e.target.innerHTML){
+					if (!selectList.children || selectList.children) {
+						// selectList.children.forEach(children => {
+							// if (children.innerHTML == )
+							const selectHiddenItems = document.createElement( "li" );
+							selectHiddenItems.textContent = e.target.innerHTML;
+							selectList.appendChild(selectHiddenItems);
+							if (selectList.children) {
+								console.log("je passe par là", hiddenSection);
+								hiddenSection.classList.remove('hidden');
+								console.log("je suis le noeud ul", selectList)
+							}
+						// })
+					}
+				}
 			// })
-		// })
+		})
 	})
 }
 
