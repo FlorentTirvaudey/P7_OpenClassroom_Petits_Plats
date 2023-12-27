@@ -94,7 +94,7 @@ function openDropdownMenu() {
 }
 
 function createSearchContainer(element) {
-	const noeudParent = document.getElementById("search_container_created"); // à définir dans l'html
+	const noeudParent = document.getElementById("search_container_created");
 
 	const searchContainer = document.createElement( "div" );
 	searchContainer.setAttribute("class", "flex flex-row justify-between items-center p-6 bg-yellow-400 rounded-[15px] w-[20%]");
@@ -117,11 +117,41 @@ function createSearchContainer(element) {
 	noeudParent.appendChild(searchContainer);
 }
 
-// function createContainerInDropdown() {
-// 	const selectHiddenItems = document.createElement( "li" );
-// 	selectHiddenItems.textContent = e.target.innerHTML;
-// 	selectList.appendChild(selectHiddenItems);
-// }
+function createContainerInDropdown(element, noeudParent) {
+	const selectHiddenItems = document.createElement( "li" );
+	selectHiddenItems.setAttribute("class", "flex text-xl justify-between align-middle px-2 py-2");
+	selectHiddenItems.textContent = element;
+
+	// const elementInHiddenList = document.createElement( "span" );
+	// elementInHiddenList.setAttribute("class", "font-['Manrope']");
+	// elementInHiddenList.textContent = element;
+
+	const crossButtonInDropdown = document.createElement( "button" );
+	crossButtonInDropdown.setAttribute("class", "text-xl hidden");
+
+	const crossInDropdown = document.createElement( "i" );
+	crossInDropdown.setAttribute("class", "fa-solid fa-xmark");
+
+	crossButtonInDropdown.appendChild(crossInDropdown);
+
+	// selectHiddenItems.appendChild(elementInHiddenList);
+	selectHiddenItems.appendChild(crossButtonInDropdown);
+
+	noeudParent.appendChild(selectHiddenItems);
+}
+
+function isAlreadyInChild(noeud, element) {
+	let result = false;
+
+	for (let i = 0; i < noeud.children.length; i++) {
+		console.log("celui dans le child", noeud.children);
+		console.log("celui où on clique", element);
+		if (noeud.children[i].innerText === element) {
+			result = true;
+		}
+	}
+	return result;
+}
 
 function displayDataInDropdownMenu(noeud, datas, selectList, hiddenSection) {
 
@@ -133,31 +163,29 @@ function displayDataInDropdownMenu(noeud, datas, selectList, hiddenSection) {
 		noeud.appendChild(li);
 		
 		li.addEventListener("click", e => {
-			createSearchContainer(e.target.innerHTML);
-			console.log("je suis le noeud ul AVANT LES IF", selectList)
 
-			// tabTest.push(e.target.innerHTML);
-			// tabTest.forEach(items => {
-			// 	if (items !== e.target.innerHTML)
-			// })
-			// selectList.children.forEach(childrens => {
-			// 	if (childrens.textContent !== e.target.innerHTML) {
-				if (e.target.innerHTML){
-					if (!selectList.children || selectList.children) {
-						// selectList.children.forEach(children => {
-							// if (children.innerHTML == )
-							const selectHiddenItems = document.createElement( "li" );
-							selectHiddenItems.textContent = e.target.innerHTML;
-							selectList.appendChild(selectHiddenItems);
-							if (selectList.children) {
-								console.log("je passe par là", hiddenSection);
-								hiddenSection.classList.remove('hidden');
-								console.log("je suis le noeud ul", selectList)
-							}
-						// })
-					}
+			if (e.target.innerText){
+				console.log("true ou false ?", isAlreadyInChild(selectList, e.target.innerText));
+				console.log("la diff ?", e.target.innerText);
+				console.log("avec innerHtml ?", e.target.innerHTML);
+				if (!selectList.children.length || !(isAlreadyInChild(selectList, e.target.innerText))) {
+					createSearchContainer(e.target.innerText);
+					createContainerInDropdown(e.target.innerText, selectList);
+					hiddenSection.classList.remove('hidden');
 				}
-			// })
+				// else {
+				// 	for (let i = 0; i < selectList.children.length; i++) {
+
+				// 		// selectList.children.forEach(children => {
+				// 			if (!(selectList.children[i].innerText === e.target.innerText)) {
+				// 				createSearchContainer(e.target.innerText);
+				// 				createContainerInDropdown(e.target.innerText, selectList);
+				// 			}
+				// 		// })
+				// 	}
+
+				// }
+			}	
 		})
 	})
 }
@@ -205,8 +233,12 @@ function displayPage() {
 	const apparInput = document.getElementById("appareils_input");
 	const ustenInput = document.getElementById("ustensiles_input");
 
-	const ustenHiddenSection = document.getElementById("hidden_section_ustensils"); // en test ajout dans le dropdown menu
+	const ustenHiddenSection = document.getElementById("hidden_ustensils_in_dropdown"); // en test ajout dans le dropdown menu, doit avoir un li déclarer dans ul sinon vide !!!
 
+	if(!ustenHiddenSection.children.length) {
+
+		console.log("gydvyvyzdvy", ustenHiddenSection)
+	}
 	const ingredients = getIngredients(recipes);
 	const appareils = getAppareils(recipes);
 	const ustensils = getUstensils(recipes);
