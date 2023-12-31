@@ -243,26 +243,64 @@ function filteredInDropdownMenu(noeud, e, datas, hiddenUstensilsList, ustenHidde
 	}
 }
 
-function initCards() {
-	const cardsection = document.getElementById("card_section");
-	const nbRecipes = document.getElementById("number_of_recipes");
+function displayRecipeCards(datas, noeudCards, noeudNbRecipes) {
 	let add = 0;
 
-	recipes.forEach(data => {
+	datas.forEach(data => {
 		add = add + 1;
-		nbRecipes.textContent = add;
+		noeudNbRecipes.textContent = add;
+
 		const recipe = new Recipe(data);
 		const card = new RecipeCard(recipe).getReceipeCard();
-		cardsection.appendChild(card);
+		noeudCards.appendChild(card);
 	})
 }
 
+function updateRecipeCard(datas, noeudCards, noeudNbRecipes) {
+	noeudCards.innerHTML = "";
+	noeudNbRecipes.innerHTML = "";
+
+	let add = 0;
+
+	datas.forEach(data => {
+		add = add + 1;
+		noeudNbRecipes.textContent = add;
+
+		const recipe = new Recipe(data);
+		const card = new RecipeCard(recipe).getReceipeCard();
+		noeudCards.appendChild(card);
+	})	
+}
+
+function filteredRecipeCard(datas, e, noeudCards, noeudNbRecipes) {
+
+	const eventValue = e.target.value.trim().toLowerCase();
+
+	if (!eventValue || eventValue.length < 3) {
+		updateRecipeCard(datas, noeudCards, noeudNbRecipes);
+	} else if (eventValue.length >= 3){
+		const filteredDatas = datas.filter(element => element.name.toLowerCase().includes(eventValue) 
+		|| element.description.toLowerCase().includes(eventValue) 
+		|| element.ingredients.forEach(data => {
+			data.ingredient.toLowerCase().includes(eventValue);
+		})
+		);
+		updateRecipeCard(filteredDatas, noeudCards, noeudNbRecipes);
+	}
+}
+
+
 function displayPage() {
+	const cardsection = document.getElementById("card_section");
+	const nbRecipes = document.getElementById("number_of_recipes");
+
 	const ingreInput = document.getElementById("ingredient_input");
 	const apparInput = document.getElementById("appareils_input");
 	const ustenInput = document.getElementById("ustensiles_input");
 
-	const ustenHiddenSection = document.getElementById("hidden_ustensils_in_dropdown"); // en test ajout dans le dropdown menu, doit avoir un li déclarer dans ul sinon vide !!!
+	const ustenHiddenSection = document.getElementById("hidden_ustensils_in_dropdown");
+
+	const mainInput = document.getElementById("main_input");
 
 	const ingredients = getIngredients(recipes);
 	const appareils = getAppareils(recipes);
@@ -271,6 +309,8 @@ function displayPage() {
 	displayDataInDropdownMenu(ingreInDropdown, ingredients);
 	displayDataInDropdownMenu(apparInDropdown, appareils);
 	displayDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList, ustenHiddenSection);
+
+	displayRecipeCards(recipes, cardsection, nbRecipes);
 
 	ingreInput.addEventListener("input", (e) => {
 		filteredInDropdownMenu(ingreInDropdown, e, ingredients);
@@ -282,7 +322,10 @@ function displayPage() {
 		filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList, ustenHiddenSection);
 	})
 
-	initCards();
+	mainInput.addEventListener("input", e => {
+		filteredRecipeCard(recipes, e, cardsection, nbRecipes);
+	})
+
 	openDropdownMenu();
 }
 
