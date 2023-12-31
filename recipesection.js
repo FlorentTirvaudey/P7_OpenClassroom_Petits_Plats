@@ -93,10 +93,17 @@ function openDropdownMenu() {
 	openDropdownMenuCSS(ustensilesBtn, searchbarMenuUstensiles, chevronBtnUst);
 }
 
+function removeOnclickCross(cross, noeud) {
+	cross.addEventListener("click", () => {
+		noeud.remove();
+	})
+}
+
 function createSearchContainer(element) {
 	const noeudParent = document.getElementById("search_container_created");
 
 	const searchContainer = document.createElement( "div" );
+	searchContainer.setAttribute("id", "search_item_in_new_container");
 	searchContainer.setAttribute("class", "flex flex-row justify-between items-center p-6 bg-yellow-400 rounded-[15px] w-[20%]");
 
 	const elementContent = document.createElement( "span" );
@@ -115,11 +122,19 @@ function createSearchContainer(element) {
 	searchContainer.appendChild(crossButton);
 
 	noeudParent.appendChild(searchContainer);
+
+	crossButton.addEventListener("click", () => {
+		const otherCrossToRemove = document.getElementById("search_item_in_dropdown");
+
+		searchContainer.remove();
+		otherCrossToRemove.remove();
+	})
 }
 
 function createContainerInDropdown(element, noeudParent) {
 	const selectHiddenItems = document.createElement( "li" );
 	selectHiddenItems.setAttribute("class", "flex text-xl justify-between align-middle px-2 py-2");
+	selectHiddenItems.setAttribute("id", "search_item_in_dropdown");
 	selectHiddenItems.textContent = element;
 
 	// const elementInHiddenList = document.createElement( "span" );
@@ -138,6 +153,13 @@ function createContainerInDropdown(element, noeudParent) {
 	selectHiddenItems.appendChild(crossButtonInDropdown);
 
 	noeudParent.appendChild(selectHiddenItems);
+
+	crossButtonInDropdown.addEventListener("click", () => {
+		const otherCrossToRemove = document.getElementById("search_item_in_new_container");
+
+		selectHiddenItems.remove();
+		otherCrossToRemove.remove();
+	})
 }
 
 function isAlreadyInChild(noeud, element) {
@@ -271,5 +293,5 @@ displayPage();
 
 /* 
 	Questions :
-	- est-ce qu'il faut utilisé une factory pattern pour les items dans les dropdown menu ? 
-*/
+
+	*/
