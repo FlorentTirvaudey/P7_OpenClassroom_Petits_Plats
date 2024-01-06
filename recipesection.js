@@ -4,7 +4,7 @@ const ustenInDropdown = document.getElementById("ustensils_in_dropdown");
 
 const hiddenUstensilsList = document.getElementById("hidden_ustensils_in_dropdown"); // en teste ajout dans le dropdown menu
 
-function getIngredients(data) {
+function getAllIngredients(data) {
 	let ingredientTab = [];
 
 	data.forEach(datas => {
@@ -18,7 +18,7 @@ function getIngredients(data) {
 	return ingredientTab;
 }
 
-function getAppareils(data) {
+function getAllAppareils(data) {
 	let appareilsTab = [];
 
 	data.forEach(datas => {
@@ -30,7 +30,7 @@ function getAppareils(data) {
 	return appareilsTab;
 }
 
-function getUstensils(data) {
+function getAllUstensils(data) {
 	let ustensilsTab = [];
 
 	data.forEach(datas => {
@@ -149,7 +149,6 @@ function createContainerInDropdown(element, noeudParent) {
 
 	crossButtonInDropdown.appendChild(crossInDropdown);
 
-	// selectHiddenItems.appendChild(elementInHiddenList);
 	selectHiddenItems.appendChild(crossButtonInDropdown);
 
 	noeudParent.appendChild(selectHiddenItems);
@@ -191,18 +190,6 @@ function displayDataInDropdownMenu(noeud, datas, selectList, hiddenSection) {
 					createContainerInDropdown(e.target.innerText, selectList);
 					hiddenSection.classList.remove('hidden');
 				}
-				// else {
-				// 	for (let i = 0; i < selectList.children.length; i++) {
-
-				// 		// selectList.children.forEach(children => {
-				// 			if (!(selectList.children[i].innerText === e.target.innerText)) {
-				// 				createSearchContainer(e.target.innerText);
-				// 				createContainerInDropdown(e.target.innerText, selectList);
-				// 			}
-				// 		// })
-				// 	}
-
-				// }
 			}	
 		})
 	})
@@ -211,6 +198,8 @@ function displayDataInDropdownMenu(noeud, datas, selectList, hiddenSection) {
 function updateDataInDropdownMenu(noeud, datas, selectList, hiddenSection) {
 
 	noeud.innerHTML = "";
+
+	console.log("test")
 	
 	datas.forEach(data => {
 		const li = document.createElement( "li" );
@@ -231,9 +220,24 @@ function updateDataInDropdownMenu(noeud, datas, selectList, hiddenSection) {
 }
 
 function filteredInDropdownMenu(noeud, e, datas, hiddenUstensilsList, ustenHiddenSection) {
-	// const inputValue = document.getElementById(idInput).value.trim().toLowerCase();
+
 	const eventValue = e.target.value.trim().toLowerCase();
+
 	console.log(e.target);
+
+	if (!eventValue || eventValue.length < 3) {
+		updateDataInDropdownMenu(noeud, datas, hiddenUstensilsList, ustenHiddenSection);
+	} else if (eventValue.length >= 3){
+		const filteredDatas = datas.filter(element => element.toLowerCase().includes(eventValue));
+		updateDataInDropdownMenu(noeud, filteredDatas, hiddenUstensilsList, ustenHiddenSection);
+	}
+}
+
+function filteredInDropdownMenu(noeud, e, datas, hiddenUstensilsList, ustenHiddenSection) {
+
+	const eventValue = e.target.value.trim().toLowerCase();
+
+	console.log(datas);
 
 	if (!eventValue || eventValue.length < 3) {
 		updateDataInDropdownMenu(noeud, datas, hiddenUstensilsList, ustenHiddenSection);
@@ -272,12 +276,22 @@ function updateRecipeCard(datas, noeudCards, noeudNbRecipes) {
 	})	
 }
 
-function filteredRecipeCard(datas, e, noeudCards, noeudNbRecipes) {
+function filterInDropdownWithFilterRecipes(noeud, e, datas) {
+	noeud.innerHTML = "";
+
+	datas.forEach(element => {
+
+	})
+}
+
+function filteredRecipeCard(datas, e, noeudCards, noeudNbRecipes, ingreInput, apparInput, ustenInput, hiddenUstensilsList, ustenHiddenSection) {
 
 	const eventValue = e.target.value.trim().toLowerCase();
 
 	if (!eventValue || eventValue.length < 3) {
 		updateRecipeCard(datas, noeudCards, noeudNbRecipes);
+		updateDataInDropdownMenu(ustenInDropdown, datas, hiddenUstensilsList, ustenHiddenSection);
+		console.log("datas", datas)
 	} else if (eventValue.length >= 3){
 		const filteredDatas = datas.filter(element => element.name.toLowerCase().includes(eventValue) 
 		|| element.description.toLowerCase().includes(eventValue) 
@@ -285,7 +299,36 @@ function filteredRecipeCard(datas, e, noeudCards, noeudNbRecipes) {
 			data.ingredient.toLowerCase().includes(eventValue);
 		})
 		);
+		const updatedIngredients = getAllIngredients(filteredDatas);
+		const updatedAppareils = getAllAppareils(filteredDatas);
+		const updatedUstensils = getAllUstensils(filteredDatas);
+
+		// console.log("updated datas ingredients", updatedIngredients);
+
 		updateRecipeCard(filteredDatas, noeudCards, noeudNbRecipes);
+
+		// displayDataInDropdownMenu(ingreInDropdown, updatedIngredients);
+		// displayDataInDropdownMenu(apparInDropdown, updatedAppareils);
+		// displayDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, ustenHiddenSection);
+
+		// filteredInDropdownMenu(ingreInDropdown, e, updatedIngredients);
+		// filteredInDropdownMenu(apparInDropdown, e, updatedAppareils);
+		// filteredInDropdownMenu(ustenInDropdown, e, updatedUstensils, hiddenUstensilsList, ustenHiddenSection);
+
+
+		// updateDataInDropdownMenu(ingreInput, updatedIngredients, hiddenUstensilsList, ustenHiddenSection);
+		// updateDataInDropdownMenu(apparInput, updatedAppareils, hiddenUstensilsList, ustenHiddenSection);
+		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, ustenHiddenSection);
+		
+		ingreInput.addEventListener("input", (e) => {
+			filteredInDropdownMenu(ingreInDropdown, e, updatedIngredients);
+		})
+		apparInput.addEventListener("input", (e) => {
+			filteredInDropdownMenu(apparInDropdown, e, updatedAppareils);
+		})
+		ustenInput.addEventListener("input", (e) => {
+			filteredInDropdownMenu(ustenInDropdown, e, updatedUstensils, hiddenUstensilsList, ustenHiddenSection);
+		})
 	}
 }
 
@@ -302,9 +345,9 @@ function displayPage() {
 
 	const mainInput = document.getElementById("main_input");
 
-	const ingredients = getIngredients(recipes);
-	const appareils = getAppareils(recipes);
-	const ustensils = getUstensils(recipes);
+	const ingredients = getAllIngredients(recipes);
+	const appareils = getAllAppareils(recipes);
+	const ustensils = getAllUstensils(recipes);
 
 	displayDataInDropdownMenu(ingreInDropdown, ingredients);
 	displayDataInDropdownMenu(apparInDropdown, appareils);
@@ -323,7 +366,7 @@ function displayPage() {
 	})
 
 	mainInput.addEventListener("input", e => {
-		filteredRecipeCard(recipes, e, cardsection, nbRecipes);
+		filteredRecipeCard(recipes, e, cardsection, nbRecipes, ingreInput, apparInput, ustenInput, hiddenUstensilsList, ustenHiddenSection);
 	})
 
 	openDropdownMenu();
