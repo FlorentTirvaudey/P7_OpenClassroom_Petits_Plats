@@ -284,14 +284,26 @@ function filterInDropdownWithFilterRecipes(noeud, e, datas) {
 	})
 }
 
-function filteredRecipeCard(datas, e, noeudCards, noeudNbRecipes, ingreInput, apparInput, ustenInput, hiddenUstensilsList, ustenHiddenSection) {
+function filteredRecipeCard(datas, e, noeudCards, noeudNbRecipes, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput, hiddenUstensilsList, ustenHiddenSection) {
 
 	const eventValue = e.target.value.trim().toLowerCase();
-
+	
 	if (!eventValue || eventValue.length < 3) {
 		updateRecipeCard(datas, noeudCards, noeudNbRecipes);
-		updateDataInDropdownMenu(ustenInDropdown, datas, hiddenUstensilsList, ustenHiddenSection);
+		updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList, ustenHiddenSection);
+
 		console.log("datas", datas)
+
+		ingreInput.addEventListener("input", (e) => {
+			filteredInDropdownMenu(ingreInDropdown, e, ingredients);
+		})
+		apparInput.addEventListener("input", (e) => {
+			filteredInDropdownMenu(apparInDropdown, e, appareils);
+		})
+		ustenInput.addEventListener("input", (e) => {
+			filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList, ustenHiddenSection);
+		})
+
 	} else if (eventValue.length >= 3){
 		const filteredDatas = datas.filter(element => element.name.toLowerCase().includes(eventValue) 
 		|| element.description.toLowerCase().includes(eventValue) 
@@ -299,25 +311,13 @@ function filteredRecipeCard(datas, e, noeudCards, noeudNbRecipes, ingreInput, ap
 			data.ingredient.toLowerCase().includes(eventValue);
 		})
 		);
+		
 		const updatedIngredients = getAllIngredients(filteredDatas);
 		const updatedAppareils = getAllAppareils(filteredDatas);
 		const updatedUstensils = getAllUstensils(filteredDatas);
 
-		// console.log("updated datas ingredients", updatedIngredients);
-
 		updateRecipeCard(filteredDatas, noeudCards, noeudNbRecipes);
 
-		// displayDataInDropdownMenu(ingreInDropdown, updatedIngredients);
-		// displayDataInDropdownMenu(apparInDropdown, updatedAppareils);
-		// displayDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, ustenHiddenSection);
-
-		// filteredInDropdownMenu(ingreInDropdown, e, updatedIngredients);
-		// filteredInDropdownMenu(apparInDropdown, e, updatedAppareils);
-		// filteredInDropdownMenu(ustenInDropdown, e, updatedUstensils, hiddenUstensilsList, ustenHiddenSection);
-
-
-		// updateDataInDropdownMenu(ingreInput, updatedIngredients, hiddenUstensilsList, ustenHiddenSection);
-		// updateDataInDropdownMenu(apparInput, updatedAppareils, hiddenUstensilsList, ustenHiddenSection);
 		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, ustenHiddenSection);
 		
 		ingreInput.addEventListener("input", (e) => {
@@ -366,7 +366,7 @@ function displayPage() {
 	})
 
 	mainInput.addEventListener("input", e => {
-		filteredRecipeCard(recipes, e, cardsection, nbRecipes, ingreInput, apparInput, ustenInput, hiddenUstensilsList, ustenHiddenSection);
+		filteredRecipeCard(recipes, e, cardsection, nbRecipes, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput, hiddenUstensilsList, ustenHiddenSection);
 	})
 
 	openDropdownMenu();
