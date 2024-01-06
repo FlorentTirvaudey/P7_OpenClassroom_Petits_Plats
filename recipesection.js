@@ -290,6 +290,9 @@ function filteredRecipeCard(datas, e, noeudCards, noeudNbRecipes, ingredients, a
 	
 	if (!eventValue || eventValue.length < 3) {
 		updateRecipeCard(datas, noeudCards, noeudNbRecipes);
+
+		updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenUstensilsList, ustenHiddenSection);
+		updateDataInDropdownMenu(apparInDropdown, appareils, hiddenUstensilsList, ustenHiddenSection);
 		updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList, ustenHiddenSection);
 
 		console.log("datas", datas)
@@ -318,6 +321,8 @@ function filteredRecipeCard(datas, e, noeudCards, noeudNbRecipes, ingredients, a
 
 		updateRecipeCard(filteredDatas, noeudCards, noeudNbRecipes);
 
+		updateDataInDropdownMenu(ingreInDropdown, updatedIngredients, hiddenUstensilsList, ustenHiddenSection);
+		updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenUstensilsList, ustenHiddenSection);
 		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, ustenHiddenSection);
 		
 		ingreInput.addEventListener("input", (e) => {
