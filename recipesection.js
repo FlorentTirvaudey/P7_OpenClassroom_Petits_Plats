@@ -113,28 +113,48 @@ function createSearchContainer(element, noeudToRemove, datasFromRecipes) {
 
 	crossButton.addEventListener("click", e => {
 		// const otherCrossToRemove = document.getElementById("search_item_in_dropdown");
-
+		const itemToRemove = Array.from(noeudToRemove.children).filter(element => element.textContent === elementContent.textContent)[0];
+		searchContainer.remove();
+			itemToRemove.remove();
 		// console.log(e.target.parentElement.previousElementSibling.textContent)
 
 		// const otherCrossToRemove = document.getElementById("hidden_ustensils_in_dropdown")
 
 		const itemsInNoeudParent = Array.from(noeudParent.children);
+		console.log("itemsInNoeudParent avant vjdgjkgzkj", itemsInNoeudParent)	
 
-		console.log("itemsInNoeudParent", itemsInNoeudParent)		
+		console.log("e", e.target.parentElement.previousElementSibling.textContent)
+		// itemsInNoeudParent.map(element => element.textContent.toLowerCase() === e.target.parentElement.previousElementSibling.textContent.toLowerCase()).remove();
+		console.log("itemsInNoeudParent", itemsInNoeudParent)	
 
-		const itemToRemove = Array.from(noeudToRemove.children).filter(element => element.textContent === elementContent.textContent)[0];
-		console.log(itemToRemove);
-		console.log(searchContainer);
+
+		// console.log(itemToRemove);
+		// console.log(searchContainer);
+
+		if (!itemsInNoeudParent.length) {
+			
+
+			const updatedIngredients = getAllIngredients(recipes);
+			const updatedAppareils = getAllAppareils(recipes);
+			const updatedUstensils = getAllUstensils(recipes);
+
+			updateRecipeCard(recipes, nbRecipes);
+
+			updateDataInDropdownMenu(ingreInDropdown, updatedIngredients, hiddenIngredientsList, recipes);
+			updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenAppareilsList, recipes);
+			updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, recipes);
+
+		} else {
 		
 
 		// const filteredDatas = Array.from(noeudParent.children).forEach(element => datasFromRecipes.filter(datas => datas.ingredients.find(data => data.ingredient.toLowerCase() === element)
 		// || datas.appliance.trim().toLowerCase().includes(element) 
 		// || datas.ustensils.find(data => data.toLowerCase() === element)));
 
-		const filteredDatas = datasFromRecipes.filter(datas =>
-			itemsInNoeudParent.some(element =>
-				datas.ingredients.some(data => data.ingredient.toLowerCase() === element.textContent.toLowerCase())
-				|| datas.appliance.trim().toLowerCase().includes(element.textContent.toLowerCase())
+		const filteredDatas = recipes.filter(datas =>
+			itemsInNoeudParent.find(element =>
+				datas.appliance.trim().toLowerCase().includes(element.textContent.toLowerCase())
+				|| datas.ingredients.some(data => data.ingredient.toLowerCase() === element.textContent.toLowerCase())
 				|| datas.ustensils.some(data => data.toLowerCase() === element.textContent.toLowerCase())
 			)
 		);
@@ -149,12 +169,14 @@ function createSearchContainer(element, noeudToRemove, datasFromRecipes) {
 		updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenAppareilsList, filteredDatas);
 		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, filteredDatas);
 
-			console.log("filteredDatas in addbfhbjlkefj", filteredDatas)
+		console.log("filteredDatas in addbfhbjlkefj", filteredDatas)
 
 		searchContainer.remove();
 		itemToRemove.remove();
 
-		console.log("itemsInNoeudParent last remove", itemsInNoeudParent)		
+		console.log("itemsInNoeudParent last remove", itemsInNoeudParent)	
+		
+		}
 
 	})
 }
@@ -197,12 +219,6 @@ function createContainerInDropdown(element, noeudParent, datasFromRecipes) {
 	})
 }
 
-function filteredWhenRemoveTags(e, datasFromRecipes) {
-	const eventValue = e.target.textContent.trim().toLowerCase();
-
-
-}
-
 function filteredWithTags(e, datasFromRecipes) {
 
 	const ingreInput = document.getElementById("ingredient_input");
@@ -214,7 +230,7 @@ function filteredWithTags(e, datasFromRecipes) {
 	// const ustensils = getAllUstensils(recipes);
 
 	const eventValue = e.target.textContent.trim().toLowerCase();
-	console.log("dataRecipes.ustensils ici", datasFromRecipes[0].ustensils);
+	// console.log("dataRecipes.ustensils ici", datasFromRecipes[0].ustensils);
 
 	const filteredDatas = datasFromRecipes.filter(element => element.ingredients.find(data => data.ingredient.toLowerCase() === eventValue)
 	|| element.appliance.trim().toLowerCase().includes(eventValue) 
@@ -223,7 +239,7 @@ function filteredWithTags(e, datasFromRecipes) {
 		// console.log("eventValue en comparaison", eventValue)
 		data.toLowerCase() === eventValue
 	));
-	console.log("test un deux", datasFromRecipes.filter(element => element.ustensils.find(data => data.toLowerCase() === eventValue)))
+	// console.log("test un deux", datasFromRecipes.filter(element => element.ustensils.find(data => data.toLowerCase() === eventValue)))
 
 	// const vardetest = datasFromRecipes.forEach(element => {
 	// 	element.ustensils.forEach(data => {
@@ -391,7 +407,7 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 		})
 
 	} else if (eventValue.length >= 3){
-		const filteredDatas = datas.filter(element => element.name.toLowerCase().includes(eventValue) 
+		let filteredDatas = datas.filter(element => element.name.toLowerCase().includes(eventValue) 
 		|| element.description.toLowerCase().includes(eventValue) 
 		|| element.ingredients.forEach(data => {
 			data.ingredient.toLowerCase().includes(eventValue);
@@ -400,6 +416,14 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 			}
 		})
 		);
+		// if (childrens) {
+			// filteredDatas = filteredDatas.filter(element => element.ingredients.find(data => data.ingredient.toLowerCase() === eventValue)
+			// || element.appliance.trim().toLowerCase().includes(eventValue) 
+			// || element.ustensils.find(data =>
+			// 	data.toLowerCase() === eventValue
+			// ));
+		// }
+		// filtrer en fonction des childrens et plus de l'event =/= filterwithtags
 		
 		const updatedIngredients = getAllIngredients(filteredDatas);
 		const updatedAppareils = getAllAppareils(filteredDatas);
