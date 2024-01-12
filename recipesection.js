@@ -81,13 +81,13 @@ function openDropdownMenu() {
 	openDropdownMenuCSS(ustensilesBtn, searchbarMenuUstensiles, chevronBtnUst);
 }
 
-function removeOnclickCross(cross, noeud) {
-	cross.addEventListener("click", () => {
-		noeud.remove();
-	})
-}
+// function removeOnclickCross(cross, noeud) {
+// 	cross.addEventListener("click", () => {
+// 		noeud.remove();
+// 	})
+// }
 
-function createSearchContainer(element, noeudToRemove) {
+function createSearchContainer(element, noeudToRemove, datasFromRecipes) {
 	const noeudParent = document.getElementById("search_container_created");
 
 	const searchContainer = document.createElement( "div" );
@@ -117,18 +117,49 @@ function createSearchContainer(element, noeudToRemove) {
 		// console.log(e.target.parentElement.previousElementSibling.textContent)
 
 		// const otherCrossToRemove = document.getElementById("hidden_ustensils_in_dropdown")
-		
+
+		const itemsInNoeudParent = Array.from(noeudParent.children);
+
+		console.log("itemsInNoeudParent", itemsInNoeudParent)		
 
 		const itemToRemove = Array.from(noeudToRemove.children).filter(element => element.textContent === elementContent.textContent)[0];
 		console.log(itemToRemove);
 		console.log(searchContainer);
+		
+
+		// const filteredDatas = Array.from(noeudParent.children).forEach(element => datasFromRecipes.filter(datas => datas.ingredients.find(data => data.ingredient.toLowerCase() === element)
+		// || datas.appliance.trim().toLowerCase().includes(element) 
+		// || datas.ustensils.find(data => data.toLowerCase() === element)));
+
+		const filteredDatas = datasFromRecipes.filter(datas =>
+			itemsInNoeudParent.some(element =>
+				datas.ingredients.some(data => data.ingredient.toLowerCase() === element.textContent.toLowerCase())
+				|| datas.appliance.trim().toLowerCase().includes(element.textContent.toLowerCase())
+				|| datas.ustensils.some(data => data.toLowerCase() === element.textContent.toLowerCase())
+			)
+		);
+
+		const updatedIngredients = getAllIngredients(filteredDatas);
+		const updatedAppareils = getAllAppareils(filteredDatas);
+		const updatedUstensils = getAllUstensils(filteredDatas);
+
+		updateRecipeCard(filteredDatas, nbRecipes);
+
+		updateDataInDropdownMenu(ingreInDropdown, updatedIngredients, hiddenIngredientsList, filteredDatas);
+		updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenAppareilsList, filteredDatas);
+		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, filteredDatas);
+
+			console.log("filteredDatas in addbfhbjlkefj", filteredDatas)
 
 		searchContainer.remove();
 		itemToRemove.remove();
+
+		console.log("itemsInNoeudParent last remove", itemsInNoeudParent)		
+
 	})
 }
 
-function createContainerInDropdown(element, noeudParent) {
+function createContainerInDropdown(element, noeudParent, datasFromRecipes) {
 	const selectHiddenItems = document.createElement( "li" );
 	selectHiddenItems.setAttribute("class", "flex text-xl justify-between align-middle px-2 py-2");
 	selectHiddenItems.setAttribute("id", "search_item_in_dropdown");
@@ -150,25 +181,86 @@ function createContainerInDropdown(element, noeudParent) {
 
 	noeudParent.appendChild(selectHiddenItems);
 
-	// selectHiddenItems.addEventListener("mouseover", () => {
-	// 	crossButtonInDropdown.removeAttribute("hidden");
-	// 	console.log("test")
-	// })
+	selectHiddenItems.addEventListener("mouseover", () => {
+		crossButtonInDropdown.classList.remove("hidden");
+		console.log("test")
+	})
 
 	crossButtonInDropdown.addEventListener("click", e => {
 		const otherCrossToRemove = document.getElementById("search_item_in_new_container");
 		console.log(e)
+
+		// const itemToRemove = Array.from(noeudToRemove.children).filter(element => element.textContent === elementContent.textContent)[0];
+
 		selectHiddenItems.remove();
 		otherCrossToRemove.remove();
 	})
+}
+
+function filteredWhenRemoveTags(e, datasFromRecipes) {
+	const eventValue = e.target.textContent.trim().toLowerCase();
+
+
+}
+
+function filteredWithTags(e, datasFromRecipes) {
+
+	const ingreInput = document.getElementById("ingredient_input");
+	const apparInput = document.getElementById("appareils_input");
+	const ustenInput = document.getElementById("ustensiles_input");
+
+	// const ingredients = getAllIngredients(recipes);
+	// const appareils = getAllAppareils(recipes);
+	// const ustensils = getAllUstensils(recipes);
+
+	const eventValue = e.target.textContent.trim().toLowerCase();
+	console.log("dataRecipes.ustensils ici", datasFromRecipes[0].ustensils);
+
+	const filteredDatas = datasFromRecipes.filter(element => element.ingredients.find(data => data.ingredient.toLowerCase() === eventValue)
+	|| element.appliance.trim().toLowerCase().includes(eventValue) 
+	|| element.ustensils.find(data =>
+		// console.log("data en comparaison", data.trim().toLowerCase())
+		// console.log("eventValue en comparaison", eventValue)
+		data.toLowerCase() === eventValue
+	));
+	console.log("test un deux", datasFromRecipes.filter(element => element.ustensils.find(data => data.toLowerCase() === eventValue)))
+
+	// const vardetest = datasFromRecipes.forEach(element => {
+	// 	element.ustensils.forEach(data => {
+	// 		if(!data.trim().toLowerCase().includes(eventValue)) {
+	// 			console.log("ne correspond pas", data.trim().toLowerCase())
+	// 		}
+	// 	})
+	// })
+
+	// const filteredDatas = datasFromRecipes.filter(element => element.name.toLowerCase().includes(eventValue) 
+	// 	|| element.description.toLowerCase().includes(eventValue) 
+	// 	|| element.ingredients.forEach(data => {
+	// 		data.ingredient.toLowerCase().includes(eventValue);
+	// 		if(data.ingredient.toLowerCase().includes(eventValue)) {
+	// 			console.log("true include");
+	// 		}
+	// 	})
+	// 	);
+		
+	console.log("les datas filtrer avec tags ghgfg", filteredDatas);
+	console.log("les datas dans dataRecipe", datasFromRecipes)
+
+	const updatedIngredients = getAllIngredients(filteredDatas);
+	const updatedAppareils = getAllAppareils(filteredDatas);
+	const updatedUstensils = getAllUstensils(filteredDatas);
+
+	updateRecipeCard(filteredDatas, nbRecipes);
+
+	updateDataInDropdownMenu(ingreInDropdown, updatedIngredients, hiddenIngredientsList, filteredDatas);
+	updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenAppareilsList, filteredDatas);
+	updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, filteredDatas);
 }
 
 function isAlreadyInChild(noeud, element) {
 	let result = false;
 
 	for (let i = 0; i < noeud.children.length; i++) {
-		console.log("celui dans le child", noeud.children);
-		console.log("celui où on clique", element);
 		if (noeud.children[i].innerText === element) {
 			result = true;
 		}
@@ -176,7 +268,7 @@ function isAlreadyInChild(noeud, element) {
 	return result;
 }
 
-function displayDataInDropdownMenu(noeud, datas, selectList) {
+function displayDataInDropdownMenu(noeud, datas, selectList, datasFromRecipes) {
 
 	datas.forEach(data => {
 
@@ -188,16 +280,17 @@ function displayDataInDropdownMenu(noeud, datas, selectList) {
 		li.addEventListener("click", e => {
 			if (e.target.innerText){
 				if (!selectList.children.length || !(isAlreadyInChild(selectList, e.target.innerText))) {
-					createSearchContainer(e.target.innerText, selectList);
+					createSearchContainer(e.target.innerText, selectList, datasFromRecipes);
 					createContainerInDropdown(e.target.innerText, selectList);
 					selectList.classList.remove('hidden');
+					filteredWithTags(e, datasFromRecipes);
 				}
 			}	
 		})
 	})
 }
 
-function updateDataInDropdownMenu(noeud, datas, selectList) {
+function updateDataInDropdownMenu(noeud, datas, selectList, datasFromRecipes) {
 
 	noeud.innerHTML = "";
 
@@ -210,26 +303,28 @@ function updateDataInDropdownMenu(noeud, datas, selectList) {
 		li.addEventListener("click", e => {
 			if (e.target.innerText){
 				if (!selectList.children.length || !(isAlreadyInChild(selectList, e.target.innerText))) {
-					createSearchContainer(e.target.innerText, selectList);
-					createContainerInDropdown(e.target.innerText, selectList);
+					createSearchContainer(e.target.innerText, selectList, datasFromRecipes);
+					createContainerInDropdown(e.target.innerText, selectList, datasFromRecipes);
 					selectList.classList.remove('hidden');
+					filteredWithTags(e, datasFromRecipes);
+					console.log("data in update", datasFromRecipes)
 				}
 			}
 		})
 	})
 }
 
-function filteredInDropdownMenu(noeud, e, datas, selectList) {
+function filteredInDropdownMenu(noeud, e, datas, selectList, datasFromRecipes) {
 
 	const eventValue = e.target.value.trim().toLowerCase();
 
-	console.log(e.target);
+	// console.log(e.target);
 
 	if (!eventValue || eventValue.length < 3) {
-		updateDataInDropdownMenu(noeud, datas, selectList);
+		updateDataInDropdownMenu(noeud, datas, selectList, datasFromRecipes);
 	} else if (eventValue.length >= 3){
 		const filteredDatas = datas.filter(element => element.toLowerCase().includes(eventValue));
-		updateDataInDropdownMenu(noeud, filteredDatas, selectList);
+		updateDataInDropdownMenu(noeud, filteredDatas, selectList, datasFromRecipes);
 	}
 }
 
@@ -272,16 +367,16 @@ function updateRecipeCard(datas) {
 	}
 }
 
-function filteredRecipeCard(datas, e, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput) {
+function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput) {
 
-	const eventValue = e.target.value.trim().toLowerCase();
+	const eventValue = event.trim().toLowerCase();
 	
 	if (!eventValue || eventValue.length < 3) {
 		updateRecipeCard(datas, nbRecipes);
 
-		updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList);
-		updateDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList);
-		updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList);
+		updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList, datas);
+		updateDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList, datas);
+		updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList, datas);
 
 		console.log("datas", datas)
 
@@ -300,6 +395,9 @@ function filteredRecipeCard(datas, e, ingredients, appareils, ustensils, ingreIn
 		|| element.description.toLowerCase().includes(eventValue) 
 		|| element.ingredients.forEach(data => {
 			data.ingredient.toLowerCase().includes(eventValue);
+			if(data.ingredient.toLowerCase().includes(eventValue)) {
+				console.log("true include");
+			}
 		})
 		);
 		
@@ -309,9 +407,9 @@ function filteredRecipeCard(datas, e, ingredients, appareils, ustensils, ingreIn
 
 		updateRecipeCard(filteredDatas, nbRecipes);
 
-		updateDataInDropdownMenu(ingreInDropdown, updatedIngredients, hiddenIngredientsList);
-		updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenAppareilsList);
-		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList);
+		updateDataInDropdownMenu(ingreInDropdown, updatedIngredients, hiddenIngredientsList, filteredDatas);
+		updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenAppareilsList, filteredDatas);
+		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, filteredDatas);
 		
 		ingreInput.addEventListener("input", (e) => {
 			filteredInDropdownMenu(ingreInDropdown, e, updatedIngredients, hiddenIngredientsList);
@@ -325,7 +423,6 @@ function filteredRecipeCard(datas, e, ingredients, appareils, ustensils, ingreIn
 	}
 }
 
-
 function displayPage() {
 	const ingreInput = document.getElementById("ingredient_input");
 	const apparInput = document.getElementById("appareils_input");
@@ -337,24 +434,24 @@ function displayPage() {
 	const appareils = getAllAppareils(recipes);
 	const ustensils = getAllUstensils(recipes);
 
-	displayDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList);
-	displayDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList);
-	displayDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList);
+	displayDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList, recipes);
+	displayDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList, recipes);
+	displayDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList, recipes);
 
 	displayRecipeCards(recipes);
 
 	ingreInput.addEventListener("input", (e) => {
-		filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList);
+		filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList, recipes);
 	})
 	apparInput.addEventListener("input", (e) => {
-		filteredInDropdownMenu(apparInDropdown, e, appareils, hiddenAppareilsList);
+		filteredInDropdownMenu(apparInDropdown, e, appareils, hiddenAppareilsList, recipes);
 	})
 	ustenInput.addEventListener("input", (e) => {
-		filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList);
+		filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList, recipes);
 	})
 
 	mainInput.addEventListener("input", e => {
-		filteredRecipeCard(recipes, e, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput);
+		filteredRecipeCard(recipes, e.target.value, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput);
 	})
 
 	openDropdownMenu();
