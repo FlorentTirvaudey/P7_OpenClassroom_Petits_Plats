@@ -84,7 +84,7 @@ function openDropdownMenu() {
 	openDropdownMenuCSS(ustensilesBtn, searchbarMenuUstensiles, chevronBtnUst);
 }
 
-function createSearchContainer(element, noeudToRemove, datasFromRecipes) {
+function createSearchContainer(element, noeudToRemove) {
 
 	const searchContainer = document.createElement( "div" );
 	searchContainer.setAttribute("id", "search_item_in_new_container");
@@ -115,11 +115,11 @@ function createSearchContainer(element, noeudToRemove, datasFromRecipes) {
 		}
 		searchContainer.remove();
 
-		filteredWithTags(recipes);
+		filteredWithTags();
 	})
 }
 
-function createSearchContainerFromMainInput(element, datasFromRecipes) {
+function createSearchContainerFromMainInput(element) {
 
 	const searchContainer = document.createElement( "div" );
 	searchContainer.setAttribute("id", "search_item_in_new_container");
@@ -146,13 +146,13 @@ function createSearchContainerFromMainInput(element, datasFromRecipes) {
 
 		searchContainer.remove();
 
-		filteredWithTags(recipes);
+		filteredWithTags();
 	})
 }
 
-function createContainerInDropdown(element, tagsSection, datasFromRecipes) {
+function createContainerInDropdown(element, noeudInDropdown) {
 	const selectHiddenItems = document.createElement( "li" );
-	selectHiddenItems.setAttribute("class", "flex text-[1em] justify-between align-middle py-[0.7em] group-hover:block");
+	selectHiddenItems.setAttribute("class", "flex text-xl justify-between align-middle px-2 py-2");
 	selectHiddenItems.setAttribute("id", "search_item_in_dropdown");
 	selectHiddenItems.textContent = element;
 
@@ -166,7 +166,7 @@ function createContainerInDropdown(element, tagsSection, datasFromRecipes) {
 
 	selectHiddenItems.appendChild(crossButtonInDropdown);
 
-	tagsSection.appendChild(selectHiddenItems);
+	noeudInDropdown.appendChild(selectHiddenItems);
 
 	selectHiddenItems.addEventListener("mouseover", () => {
 		crossButtonInDropdown.classList.remove("hidden");
@@ -177,16 +177,16 @@ function createContainerInDropdown(element, tagsSection, datasFromRecipes) {
 	})
 
 	crossButtonInDropdown.addEventListener("click", () => {
-		const otherCrossToRemove = document.getElementById("search_item_in_new_container");
+		const itemToRemove = Array.from(tagsSection.children).filter(element => element.textContent === elementContent.textContent)[0];
 
 		selectHiddenItems.remove();
-		otherCrossToRemove.remove();
+		itemToRemove.remove();
 
-		filteredWithTags(recipes);
+		filteredWithTags();
 	})
 }
 
-function filteredWithTags(datasFromRecipes) {
+function filteredWithTags() {
 
 	const itemsInTagsSection = Array.from(tagsSection.children);
 		if (!itemsInTagsSection.length) {
@@ -197,18 +197,18 @@ function filteredWithTags(datasFromRecipes) {
 
 			updateRecipeCard(recipes, nbRecipes);
 
-			updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList, recipes);
-			updateDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList, recipes);
-			updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList, recipes);
+			updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList);
+			updateDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList);
+			updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList);
 
 			ingreInput.addEventListener("input", (e) => {
-				filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList, recipes);
+				filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList);
 			})
 			apparInput.addEventListener("input", (e) => {
-				filteredInDropdownMenu(apparInDropdown, e, appareils, hiddenAppareilsList, recipes);
+				filteredInDropdownMenu(apparInDropdown, e, appareils, hiddenAppareilsList);
 			})
 			ustenInput.addEventListener("input", (e) => {
-				filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList, recipes);
+				filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList);
 			})
 
 		} else {
@@ -228,18 +228,18 @@ function filteredWithTags(datasFromRecipes) {
 
 		updateRecipeCard(filteredDatas, nbRecipes);
 
-		updateDataInDropdownMenu(ingreInDropdown, updatedIngredients, hiddenIngredientsList, filteredDatas);
-		updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenAppareilsList, filteredDatas);
-		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, filteredDatas);
+		updateDataInDropdownMenu(ingreInDropdown, updatedIngredients, hiddenIngredientsList);
+		updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenAppareilsList);
+		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList);
 
 		ingreInput.addEventListener("input", (e) => {
-			filteredInDropdownMenu(ingreInDropdown, e, updatedIngredients, hiddenIngredientsList, recipes);
+			filteredInDropdownMenu(ingreInDropdown, e, updatedIngredients, hiddenIngredientsList);
 		})
 		apparInput.addEventListener("input", (e) => {
-			filteredInDropdownMenu(apparInDropdown, e, updatedAppareils, hiddenAppareilsList, recipes);
+			filteredInDropdownMenu(apparInDropdown, e, updatedAppareils, hiddenAppareilsList);
 		})
 		ustenInput.addEventListener("input", (e) => {
-			filteredInDropdownMenu(ustenInDropdown, e, updatedUstensils, hiddenUstensilsList, recipes);
+			filteredInDropdownMenu(ustenInDropdown, e, updatedUstensils, hiddenUstensilsList);
 		})
 		}
 }
@@ -255,7 +255,7 @@ function isAlreadyInChild(noeud, element) {
 	return result;
 }
 
-function displayDataInDropdownMenu(noeud, datas, selectList, datasFromRecipes) {
+function displayDataInDropdownMenu(noeud, datas, selectList) {
 
 	datas.forEach(data => {
 
@@ -267,17 +267,17 @@ function displayDataInDropdownMenu(noeud, datas, selectList, datasFromRecipes) {
 		li.addEventListener("click", e => {
 			if (e.target.innerText){
 				if (!selectList.children.length || !(isAlreadyInChild(selectList, e.target.innerText.trim().toLowerCase()))) {
-					createSearchContainer(e.target.innerText, selectList, datasFromRecipes);
+					createSearchContainer(e.target.innerText, selectList);
 					createContainerInDropdown(e.target.innerText, selectList);
 					selectList.classList.remove('hidden');
-					filteredWithTags(datasFromRecipes);
+					filteredWithTags();
 				}
 			}	
 		})
 	})
 }
 
-function updateDataInDropdownMenu(noeud, datas, selectList, datasFromRecipes) {
+function updateDataInDropdownMenu(noeud, datas, selectList) {
 
 	noeud.innerHTML = "";
 
@@ -290,25 +290,25 @@ function updateDataInDropdownMenu(noeud, datas, selectList, datasFromRecipes) {
 		li.addEventListener("click", e => {
 			if (e.target.innerText){
 				if (!selectList.children.length || !(isAlreadyInChild(selectList, e.target.innerText))) {
-					createSearchContainer(e.target.innerText, selectList, datasFromRecipes);
-					createContainerInDropdown(e.target.innerText, selectList, datasFromRecipes);
+					createSearchContainer(e.target.innerText, selectList);
+					createContainerInDropdown(e.target.innerText, selectList);
 					selectList.classList.remove('hidden');
-					filteredWithTags(datasFromRecipes);
+					filteredWithTags();
 				}
 			}
 		})
 	})
 }
 
-function filteredInDropdownMenu(noeud, e, datas, selectList, datasFromRecipes) {
+function filteredInDropdownMenu(noeud, e, datas, selectList) {
 
 	const eventValue = e.target.value.trim().toLowerCase();
 
 	if (!eventValue || eventValue.length < 3) {
-		updateDataInDropdownMenu(noeud, datas, selectList, datasFromRecipes);
+		updateDataInDropdownMenu(noeud, datas, selectList);
 	} else if (eventValue.length >= 3){
 		const filteredDatas = datas.filter(element => element.toLowerCase().includes(eventValue));
-		updateDataInDropdownMenu(noeud, filteredDatas, selectList, datasFromRecipes);
+		updateDataInDropdownMenu(noeud, filteredDatas, selectList);
 	}
 }
 
@@ -360,9 +360,9 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 	if ((!eventValue || eventValue.length < 3) && !itemsInTagsSection.length) {
 		updateRecipeCard(datas, nbRecipes);
 
-		updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList, datas);
-		updateDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList, datas);
-		updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList, datas);
+		updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList);
+		updateDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList);
+		updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList);
 
 		ingreInput.addEventListener("input", (e) => {
 			filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList);
@@ -388,9 +388,9 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 
 		updateRecipeCard(filteredDatas, nbRecipes);
 
-		updateDataInDropdownMenu(ingreInDropdown, updatedIngredients, hiddenIngredientsList, filteredDatas);
-		updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenAppareilsList, filteredDatas);
-		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList, filteredDatas);
+		updateDataInDropdownMenu(ingreInDropdown, updatedIngredients, hiddenIngredientsList);
+		updateDataInDropdownMenu(apparInDropdown, updatedAppareils, hiddenAppareilsList);
+		updateDataInDropdownMenu(ustenInDropdown, updatedUstensils, hiddenUstensilsList);
 		
 		ingreInput.addEventListener("input", (e) => {
 			filteredInDropdownMenu(ingreInDropdown, e, updatedIngredients, hiddenIngredientsList);
@@ -414,20 +414,20 @@ function displayPage() {
 	const appareils = getAllAppareils(recipes);
 	const ustensils = getAllUstensils(recipes);
 
-	displayDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList, recipes);
-	displayDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList, recipes);
-	displayDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList, recipes);
+	displayDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList);
+	displayDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList);
+	displayDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList);
 
 	displayRecipeCards(recipes);
 
 	ingreInput.addEventListener("input", (e) => {
-		filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList, recipes);
+		filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList);
 	})
 	apparInput.addEventListener("input", (e) => {
-		filteredInDropdownMenu(apparInDropdown, e, appareils, hiddenAppareilsList, recipes);
+		filteredInDropdownMenu(apparInDropdown, e, appareils, hiddenAppareilsList);
 	})
 	ustenInput.addEventListener("input", (e) => {
-		filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList, recipes);
+		filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList);
 	})
 
 	mainInput.addEventListener("input", e => {
@@ -440,7 +440,7 @@ function displayPage() {
 		if (inputValue.length >= 3) {
 			createSearchContainerFromMainInput(inputValue);
 	
-			filteredWithTags(recipes);
+			filteredWithTags();
 		}
 	})
 
