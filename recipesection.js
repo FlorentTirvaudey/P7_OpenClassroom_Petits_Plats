@@ -374,7 +374,7 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 			filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList);
 		})
 
-	} else if (eventValue.length >= 3){
+	} else if (eventValue.length >= 3 && !itemsInTagsSection.length){
 		let filteredDatas = datas.filter(element => element.name.toLowerCase().includes(eventValue) 
 		|| element.description.toLowerCase().includes(eventValue) 
 		|| element.ingredients.forEach(data => {
