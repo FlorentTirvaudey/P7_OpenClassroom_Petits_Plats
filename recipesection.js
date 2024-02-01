@@ -351,7 +351,71 @@ function updateRecipeCard(datas) {
 	}
 }
 
-function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput) {
+function setIndex() {
+
+	let index = {};
+
+	recipes.forEach(recipe => {
+		const wordsInDescription = recipe.description.split(" ");
+		const wordInName = recipe.name.split(" ");
+		let wordIngredient; 
+		
+		recipe.ingredients.forEach(ingredient => {
+			wordIngredient = ingredient.ingredient.split(" ");
+		});
+
+		wordsInDescription.forEach(word => {
+			if(index[word]) {
+				index[word].push(recipe);
+			} else {
+				index[word] = [recipe];
+			}
+		});
+
+		wordInName.forEach(word => {
+			if(index[word]) {
+				index[word].push(recipe);
+			} else {
+				index[word] = [recipe];
+			}
+		});
+
+		wordIngredient.forEach(word => {
+			if(index[word]) {
+				index[word].push(recipe);
+			} else {
+				index[word] = [recipe];
+			}
+		});
+	})
+
+	return index;
+
+}
+
+function searchInIndex(value, index) {
+	let result = [];
+	
+	// const eventValue = value.split(" ");
+	// const words = value.split(" ");
+
+	// eventValue.forEach(word => {
+	// 	if(index[word]) {
+	// 		result.push(...index[word]);
+	// 	}
+	// });
+
+	for (let data in index) {
+		if (data.includes(value)) {
+			result = result.concat(index[data]);
+		}
+	}
+
+	// console.log("bhiujhkdjzlkdjlkz", result)
+	return new Set(result);
+}
+
+function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput, index) {
 
 	const itemsInTagsSection = Array.from(tagsSection.children);
 
@@ -374,13 +438,9 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 			filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList);
 		})
 
-	} else if (eventValue.length >= 3){
-		let filteredDatas = datas.filter(element => element.name.toLowerCase().includes(eventValue) 
-		|| element.description.toLowerCase().includes(eventValue) 
-		|| element.ingredients.forEach(data => {
-			data.ingredient.toLowerCase().includes(eventValue);
-		})
-		);
+	} else if (eventValue.length >= 3 && !itemsInTagsSection.length){
+
+		let filteredDatas = searchInIndex(eventValue, index);
 		
 		const updatedIngredients = getAllIngredients(filteredDatas);
 		const updatedAppareils = getAllAppareils(filteredDatas);
@@ -405,6 +465,11 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 }
 
 function displayPage() {
+	// const test = getIndexDescription();
+	// const index2 = getIndexName();
+	// console.log(index);
+	const index = setIndex();
+	console.log(index);
 
 	const mainInput = document.getElementById("main_input");
 
@@ -431,7 +496,7 @@ function displayPage() {
 	})
 
 	mainInput.addEventListener("input", e => {
-		filteredRecipeCard(recipes, e.target.value, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput);
+		filteredRecipeCard(recipes, e.target.value, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput, index);
 	})
 
 	mainInputButton.addEventListener("click", () => {
