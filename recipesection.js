@@ -351,36 +351,24 @@ function updateRecipeCard(datas) {
 	}
 }
 
-function setIndex() {
+function genereIndex(recipes) {
 
 	let index = {};
-
+	
 	recipes.forEach(recipe => {
 		const wordsInDescription = recipe.description.split(" ");
 		const wordInName = recipe.name.split(" ");
-		let wordIngredient; 
+		let wordIngredient = []; 
 		
 		recipe.ingredients.forEach(ingredient => {
-			wordIngredient = ingredient.ingredient.split(" ");
+			const ingredients = ingredient.ingredient.toLowerCase().split(" ");
+			ingredients.forEach(ingredient => wordIngredient.push(ingredient))
+			
 		});
 
-		wordsInDescription.forEach(word => {
-			if(index[word]) {
-				index[word].push(recipe);
-			} else {
-				index[word] = [recipe];
-			}
-		});
+		const words = new Set([...wordsInDescription, ...wordInName, ...wordIngredient])
 
-		wordInName.forEach(word => {
-			if(index[word]) {
-				index[word].push(recipe);
-			} else {
-				index[word] = [recipe];
-			}
-		});
-
-		wordIngredient.forEach(word => {
+		words.forEach(word => {
 			if(index[word]) {
 				index[word].push(recipe);
 			} else {
@@ -390,32 +378,24 @@ function setIndex() {
 	})
 
 	return index;
-
 }
 
-function searchInIndex(value, index) {
-	let result = [];
-	
-	// const eventValue = value.split(" ");
-	// const words = value.split(" ");
+function searchWordsInIndex(wordList, recipes) {
 
-	// eventValue.forEach(word => {
-	// 	if(index[word]) {
-	// 		result.push(...index[word]);
-	// 	}
-	// });
-
-	for (let data in index) {
-		if (data.includes(value)) {
-			result = result.concat(index[data]);
+	const word = wordList.pop()
+	if (word) {
+		const indexRecipes = genereIndex(recipes)[word]
+		if (indexRecipes && indexRecipes.length > 0) {
+			return searchWordsInIndex(wordList, indexRecipes)
+		} else {
+			return []
 		}
+	} else {
+		return recipes
 	}
+ }
 
-	// console.log("bhiujhkdjzlkdjlkz", result)
-	return new Set(result);
-}
-
-function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput, index) {
+function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput) {
 
 	const itemsInTagsSection = Array.from(tagsSection.children);
 
@@ -440,7 +420,7 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 
 	} else if (eventValue.length >= 3 && !itemsInTagsSection.length){
 
-		let filteredDatas = searchInIndex(eventValue, index);
+		const filteredDatas = searchWordsInIndex(eventValue.split(' '), recipes);
 		
 		const updatedIngredients = getAllIngredients(filteredDatas);
 		const updatedAppareils = getAllAppareils(filteredDatas);
@@ -465,12 +445,7 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 }
 
 function displayPage() {
-	// const test = getIndexDescription();
-	// const index2 = getIndexName();
-	// console.log(index);
-	const index = setIndex();
-	console.log(index);
-
+		
 	const mainInput = document.getElementById("main_input");
 
 	const mainInputButton = document.getElementById("main_input_button");
@@ -496,7 +471,7 @@ function displayPage() {
 	})
 
 	mainInput.addEventListener("input", e => {
-		filteredRecipeCard(recipes, e.target.value, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput, index);
+		filteredRecipeCard(recipes, e.target.value, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput);
 	})
 
 	mainInputButton.addEventListener("click", () => {
