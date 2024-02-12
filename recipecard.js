@@ -5,35 +5,35 @@ class RecipeCard {
 
     getReceipeCard() {
         const article = document.createElement( "article" );
-        article.setAttribute("class", "bg-white rounded-[20px]");
+        article.setAttribute("class", "w-[100%] bg-white rounded-[20px]");
 
         const imgContainer = document.createElement( "div" );
-        imgContainer.setAttribute("class", "relative h-[35%] w-[100%] overflow-hidden");
+        imgContainer.setAttribute("class", "relative h-[150px] w-[100%] overflow-hidden");
 
         const img = document.createElement( "img" );
         img.setAttribute("class", "rounded-t-[10px] h-[100%] w-[100%] object-cover")
         img.setAttribute("src", `/assets/pictures/Photos+P7+JS+Les+petits+plats/Photos P7 JS Les petits plats/${this._recipe.image}`);
 
         const timerContainer = document.createElement( "div" );
-        timerContainer.setAttribute("class", "absolute flex top-[20px] right-[30px] rounded-[10px] bg-[#FFD15B] p-[10px]");
+        timerContainer.setAttribute("class", "absolute flex top-[20px] right-[30px] rounded-[10px] bg-[#FFD15B] p-[8px] text-[0.8em]");
         timerContainer.textContent = this._recipe.time + " min";
 
         const recipeContainer = document.createElement( "div" );
-        recipeContainer.setAttribute("class", "ml-[20px] mr-[20px]");
+        recipeContainer.setAttribute("class", "flex flex-col items-center mx-[20px] h-[75%]");
 
         const recipeTitle = document.createElement( "h2" );
-        recipeTitle.setAttribute("class", "font-['Anton'] font-bold text-[1.6em] mt-[25px] mb-[35px]");
+        recipeTitle.setAttribute("class", "font-['Anton'] font-bold text-[1em] mt-[25px] mb-[35px]");
         recipeTitle.textContent = this._recipe.name;
 
         const recipeDescription = document.createElement( "div" );
-        recipeDescription.setAttribute("class", "font-['Manrope'] text-[1.0em]");
+        recipeDescription.setAttribute("class", "font-['Manrope'] text-[0.7em]");
 
         const firstTitle = document.createElement( "h3" );
         firstTitle.setAttribute("class", "uppercase text-zinc-500 tracking-[.10em] font-bold");
         firstTitle.textContent = "Recette";
 
         const description = document.createElement( "p" );
-        description.setAttribute("class", "mt-[15px] mb-[35px]");
+        description.setAttribute("class", "mt-[15px] mb-[35px] text-[0.9em]");
         description.textContent = this._recipe.description;
 
         const secondTitle = document.createElement( "h3" );
@@ -41,7 +41,7 @@ class RecipeCard {
         secondTitle.textContent = "Ingrédients";
 
         const gridDetailsContainer = document.createElement( "div" );
-        gridDetailsContainer.setAttribute("class", "grid grid-cols-2 mt-[15px] mb-[25px] w-[350px] gap-[50px]");
+        gridDetailsContainer.setAttribute("class", "grid grid-cols-2 my-[15px] gap-5 text-[0.9em]");
 
         this._recipe.ingredients.forEach(data => {
             const gridDetails = document.createElement( "div" );
