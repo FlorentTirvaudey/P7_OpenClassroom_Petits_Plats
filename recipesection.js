@@ -375,12 +375,16 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 		})
 
 	} else if (eventValue.length >= 3 && !itemsInTagsSection.length){
-		let filteredDatas = datas.filter(element => element.name.toLowerCase().includes(eventValue) 
-		|| element.description.toLowerCase().includes(eventValue) 
-		|| element.ingredients.forEach(data => {
-			data.ingredient.toLowerCase().includes(eventValue);
-		})
-		);
+
+		let filteredDatas = datas.filter(element => {
+			const includeInName = element.name.toLowerCase().includes(eventValue) 
+			const includeInDescription = element.description.toLowerCase().includes(eventValue) 
+			const nameOfIngredients = element.ingredients.map(ingredient => ingredient.ingredient);
+			const includeInIngredient = nameOfIngredients.join(" // ").toLowerCase().includes(eventValue);
+			
+			return includeInName || includeInDescription || includeInIngredient
+		});
+
 		
 		const updatedIngredients = getAllIngredients(filteredDatas);
 		const updatedAppareils = getAllAppareils(filteredDatas);
