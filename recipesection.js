@@ -88,14 +88,14 @@ function createSearchContainer(element, noeudToRemove, datasFromRecipes) {
 
 	const searchContainer = document.createElement( "div" );
 	searchContainer.setAttribute("id", "search_item_in_new_container");
-	searchContainer.setAttribute("class", "flex flex-row justify-between items-center p-2 bg-yellow-400 rounded-[5px] w-[5.5em]");
+	searchContainer.setAttribute("class", "flex flex-row justify-between items-center p-2 md:p-3 bg-yellow-400 rounded-[5px] md:rounded-[10px] w-[88px] md:w-[160px] lg:w-[200px]");
 
 	const elementContent = document.createElement( "span" );
-	elementContent.setAttribute("class", "flex align-middle text-[0.7em]");
+	elementContent.setAttribute("class", "flex align-middle text-[0.7em] md:text-[1.0em]");
 	elementContent.textContent = element;
 
 	const crossButton = document.createElement( "button" );
-	crossButton.setAttribute("class", "text-[0.5em]");
+	crossButton.setAttribute("class", "text-[0.5em] md:text-[0.8em]");
 
 	const crossIcon = document.createElement( "i" );
 	crossIcon.setAttribute("class", "fa-solid fa-xmark");
@@ -123,14 +123,14 @@ function createSearchContainerFromMainInput(element, datasFromRecipes) {
 
 	const searchContainer = document.createElement( "div" );
 	searchContainer.setAttribute("id", "search_item_in_new_container");
-	searchContainer.setAttribute("class", "flex flex-row justify-between items-center p-2 bg-yellow-400 rounded-[5px] w-[5.5em]");
+	searchContainer.setAttribute("class", "flex flex-row justify-between items-center p-2 md:p-3 bg-yellow-400 rounded-[5px] md:rounded-[10px] w-[88px] md:w-[160px]");
 
 	const elementContent = document.createElement( "span" );
-	elementContent.setAttribute("class", "flex align-middle text-[0.7em]");
+	elementContent.setAttribute("class", "flex align-middle text-[0.7em] md:text-[1.0em]");
 	elementContent.textContent = element;
 
 	const crossButton = document.createElement( "button" );
-	crossButton.setAttribute("class", "text-[0.5em]");
+	crossButton.setAttribute("class", "text-[0.5em] md:text-[0.8em]");
 
 	const crossIcon = document.createElement( "i" );
 	crossIcon.setAttribute("class", "fa-solid fa-xmark");
@@ -157,7 +157,7 @@ function createContainerInDropdown(element, tagsSection, datasFromRecipes) {
 	selectHiddenItems.textContent = element;
 
 	const crossButtonInDropdown = document.createElement( "button" );
-	crossButtonInDropdown.setAttribute("class", "text-[0.7em] hidden");
+	crossButtonInDropdown.setAttribute("class", "text-[0.7em] md:text-[0.9em] hidden");
 
 	const crossInDropdown = document.createElement( "i" );
 	crossInDropdown.setAttribute("class", "fa-solid fa-xmark");
