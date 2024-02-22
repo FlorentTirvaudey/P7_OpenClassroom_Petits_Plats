@@ -16,6 +16,8 @@ const ustenInput = document.getElementById("ustensiles_input");
 
 const tagsSection = document.getElementById("search_container_created");
 
+const mainInput = document.getElementById("main_input");
+
 function getAllIngredients(data) {
 	let ingredientTab = [];
 
@@ -357,24 +359,48 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 
 	const eventValue = event.trim().toLowerCase();
 	
-	if ((!eventValue || eventValue.length < 3) && !itemsInTagsSection.length) {
-		updateRecipeCard(datas, nbRecipes);
+	if ((!eventValue || eventValue.length < 3)) {
 
-		updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList);
-		updateDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList);
-		updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList);
+		if (tagsSection.children.length) {
 
-		ingreInput.addEventListener("input", (e) => {
-			filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList);
-		})
-		apparInput.addEventListener("input", (e) => {
-			filteredInDropdownMenu(apparInDropdown, e, appareils, hiddenAppareilsList);
-		})
-		ustenInput.addEventListener("input", (e) => {
-			filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList);
-		})
+			filteredWithTags();
 
-	} else if (eventValue.length >= 3 && !itemsInTagsSection.length){
+		} else {
+			updateRecipeCard(datas, nbRecipes);
+
+			updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList);
+			updateDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList);
+			updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList);
+
+			ingreInput.addEventListener("input", (e) => {
+				filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList);
+			})
+			apparInput.addEventListener("input", (e) => {
+				filteredInDropdownMenu(apparInDropdown, e, appareils, hiddenAppareilsList);
+			})
+			ustenInput.addEventListener("input", (e) => {
+				filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList);
+			})
+		}
+	} else if (eventValue.length >= 3){
+
+		let resultOfRecipes = [];
+
+		if (tagsSection.children.length) {
+			const itemsInTagsSection = Array.from(tagsSection.children);
+
+			let filteredDatas = datas;
+			itemsInTagsSection.forEach(element => {
+				filteredDatas = filteredDatas.filter(data =>
+					data.appliance.trim().toLowerCase().includes(element.textContent.toLowerCase())
+					|| data.ingredients.some(data => data.ingredient.toLowerCase().includes(element.textContent.toLowerCase()))
+					|| data.ustensils.some(data => data.toLowerCase().includes(element.textContent.toLowerCase())))
+		 }
+		 );
+
+		 datas = filteredDatas;
+		 resultOfRecipes.concat(filteredDatas);
+		}
 
 		let filteredDatas = datas.filter(element => {
 			const includeInName = element.name.toLowerCase().includes(eventValue) 
@@ -384,7 +410,6 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 			
 			return includeInName || includeInDescription || includeInIngredient
 		});
-
 		
 		const updatedIngredients = getAllIngredients(filteredDatas);
 		const updatedAppareils = getAllAppareils(filteredDatas);
@@ -409,8 +434,6 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 }
 
 function displayPage() {
-
-	const mainInput = document.getElementById("main_input");
 
 	const mainInputButton = document.getElementById("main_input_button");
 
