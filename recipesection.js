@@ -150,11 +150,11 @@ function createSearchContainerFromMainInput(element) {
 	})
 }
 
-function createContainerInDropdown(element, noeudInDropdown) {
+function createContainerInDropdown(elementContent, noeudInDropdown) {
 	const selectHiddenItems = document.createElement( "li" );
-	selectHiddenItems.setAttribute("class", "flex text-xl justify-between align-middle px-2 py-2");
+	selectHiddenItems.setAttribute("class", "flex text-[1em] justify-between align-middle py-[0.7em] group-hover:block");
 	selectHiddenItems.setAttribute("id", "search_item_in_dropdown");
-	selectHiddenItems.textContent = element;
+	selectHiddenItems.textContent = elementContent;
 
 	const crossButtonInDropdown = document.createElement( "button" );
 	crossButtonInDropdown.setAttribute("class", "text-[0.7em] md:text-[0.9em] hidden");
@@ -177,7 +177,7 @@ function createContainerInDropdown(element, noeudInDropdown) {
 	})
 
 	crossButtonInDropdown.addEventListener("click", () => {
-		const itemToRemove = Array.from(tagsSection.children).filter(element => element.textContent === elementContent.textContent)[0];
+		const itemToRemove = Array.from(tagsSection.children).filter(element => element.textContent === elementContent)[0];
 
 		selectHiddenItems.remove();
 		itemToRemove.remove();
@@ -391,36 +391,58 @@ function searchWordsInIndex(wordList, recipes) {
 			return []
 		}
 	} else {
-		return recipes
+		return recipes;
 	}
  }
 
 function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput) {
 
-	const itemsInTagsSection = Array.from(tagsSection.children);
-
 	const eventValue = event.trim().toLowerCase();
 	
-	if ((!eventValue || eventValue.length < 3) && !itemsInTagsSection.length) {
-		updateRecipeCard(datas, nbRecipes);
+	if (!eventValue || eventValue.length < 3) {
 
-		updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList);
-		updateDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList);
-		updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList);
+		if (tagsSection.children.length) {
 
-		ingreInput.addEventListener("input", (e) => {
-			filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList);
-		})
-		apparInput.addEventListener("input", (e) => {
-			filteredInDropdownMenu(apparInDropdown, e, appareils, hiddenAppareilsList);
-		})
-		ustenInput.addEventListener("input", (e) => {
-			filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList);
-		})
+			filteredWithTags();
 
-	} else if (eventValue.length >= 3 && !itemsInTagsSection.length){
+		} else {
+			updateRecipeCard(datas, nbRecipes);
+	
+			updateDataInDropdownMenu(ingreInDropdown, ingredients, hiddenIngredientsList);
+			updateDataInDropdownMenu(apparInDropdown, appareils, hiddenAppareilsList);
+			updateDataInDropdownMenu(ustenInDropdown, ustensils, hiddenUstensilsList);
+	
+			ingreInput.addEventListener("input", (e) => {
+				filteredInDropdownMenu(ingreInDropdown, e, ingredients, hiddenIngredientsList);
+			})
+			apparInput.addEventListener("input", (e) => {
+				filteredInDropdownMenu(apparInDropdown, e, appareils, hiddenAppareilsList);
+			})
+			ustenInput.addEventListener("input", (e) => {
+				filteredInDropdownMenu(ustenInDropdown, e, ustensils, hiddenUstensilsList);
+			})
+		}
+	} else if (eventValue.length >= 3){
 
-		const filteredDatas = searchWordsInIndex(eventValue.split(' '), recipes);
+		let resultOfRecipes = [];
+
+		if (tagsSection.children.length) {
+			const itemsInTagsSection = Array.from(tagsSection.children);
+
+			let filteredDatas = datas;
+			itemsInTagsSection.forEach(element => {
+				filteredDatas = filteredDatas.filter(data =>
+					data.appliance.trim().toLowerCase().includes(element.textContent.toLowerCase())
+					|| data.ingredients.some(data => data.ingredient.toLowerCase().includes(element.textContent.toLowerCase()))
+					|| data.ustensils.some(data => data.toLowerCase().includes(element.textContent.toLowerCase())))
+		 }
+		 );
+
+		 datas = filteredDatas;
+		 resultOfRecipes.concat(filteredDatas);
+		}
+
+		const filteredDatas = searchWordsInIndex(eventValue.split(' '), datas);
 		
 		const updatedIngredients = getAllIngredients(filteredDatas);
 		const updatedAppareils = getAllAppareils(filteredDatas);
