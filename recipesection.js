@@ -351,50 +351,6 @@ function updateRecipeCard(datas) {
 	}
 }
 
-function genereIndex(recipes) {
-
-	let index = {};
-	
-	recipes.forEach(recipe => {
-		const wordsInDescription = recipe.description.split(" ");
-		const wordInName = recipe.name.split(" ");
-		let wordIngredient = []; 
-		
-		recipe.ingredients.forEach(ingredient => {
-			const ingredients = ingredient.ingredient.toLowerCase().split(" ");
-			ingredients.forEach(ingredient => wordIngredient.push(ingredient))
-			
-		});
-
-		const words = new Set([...wordsInDescription, ...wordInName, ...wordIngredient])
-
-		words.forEach(word => {
-			if(index[word]) {
-				index[word].push(recipe);
-			} else {
-				index[word] = [recipe];
-			}
-		});
-	})
-
-	return index;
-}
-
-function searchWordsInIndex(wordList, recipes) {
-
-	const word = wordList.pop()
-	if (word) {
-		const indexRecipes = genereIndex(recipes)[word]
-		if (indexRecipes && indexRecipes.length > 0) {
-			return searchWordsInIndex(wordList, indexRecipes)
-		} else {
-			return []
-		}
-	} else {
-		return recipes;
-	}
- }
-
 function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ingreInput, apparInput, ustenInput) {
 
 	const eventValue = event.trim().toLowerCase();
@@ -442,8 +398,22 @@ function filteredRecipeCard(datas, event, ingredients, appareils, ustensils, ing
 		 resultOfRecipes.concat(filteredDatas);
 		}
 
-		const filteredDatas = searchWordsInIndex(eventValue.split(' '), datas);
+		let filteredDatas = [];
+		for (let i = 0; i < datas.length; i++) {
+			const element = datas[i];
+			const includeInName = element.name.toLowerCase().includes(eventValue);
+			const includeInDescription = element.description.toLowerCase().includes(eventValue);
+			const nameOfIngredients = [];
+			for (let j = 0; j < element.ingredients.length; j++) {
+				nameOfIngredients.push(element.ingredients[j].ingredient);
+			}
+			const includeInIngredient = nameOfIngredients.join(" // ").toLowerCase().includes(eventValue);
 		
+			if (includeInName || includeInDescription || includeInIngredient) {
+				filteredDatas.push(element);
+			}
+		}
+				
 		const updatedIngredients = getAllIngredients(filteredDatas);
 		const updatedAppareils = getAllAppareils(filteredDatas);
 		const updatedUstensils = getAllUstensils(filteredDatas);
